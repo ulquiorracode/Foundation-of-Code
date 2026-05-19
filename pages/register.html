@@ -147,6 +147,13 @@
           <div class="form-group">
             <label class="form-label">Пароль</label>
             <input class="form-input" type="password" placeholder="Минимум 8 символов" id="reg-password">
+            <!-- Password strength indicator -->
+            <div id="password-strength-wrapper" style="margin-top: 8px; display: none;">
+              <div style="height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden;">
+                <div id="password-strength-bar" style="height: 100%; width: 0%; transition: all 0.3s; background: #f43f5e;"></div>
+              </div>
+              <div id="password-strength-text" style="font-size: 11px; margin-top: 4px; font-weight: 500;"></div>
+            </div>
             <div class="field-hint">Буквы, цифры и спецсимволы</div>
           </div>
           <div class="form-group">
@@ -269,6 +276,68 @@
     if (e.key !== 'Enter') return;
     const regVisible = document.getElementById('form-reg').style.display !== 'none';
     if (regVisible) doRegister(); else doLogin();
+  });
+
+  // Live password validation
+  const pwdInput = document.getElementById('reg-password');
+  const pwdInput2 = document.getElementById('reg-password2');
+  const strengthWrapper = document.getElementById('password-strength-wrapper');
+  const strengthBar = document.getElementById('password-strength-bar');
+  const strengthText = document.getElementById('password-strength-text');
+
+  pwdInput.addEventListener('input', () => {
+    const val = pwdInput.value;
+    if (!val) {
+      strengthWrapper.style.display = 'none';
+      return;
+    }
+    strengthWrapper.style.display = 'block';
+
+    let score = 0;
+    if (val.length >= 8) score++;
+    if (/[a-z]/.test(val)) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/\d/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+
+    let width = '20%';
+    let color = '#f43f5e'; // Red
+    let text = 'Очень слабый пароль';
+
+    if (val.length < 8) {
+      width = '20%';
+      color = '#f43f5e';
+      text = 'Пароль слишком короткий (минимум 8 символов)';
+    } else if (score === 2) {
+      width = '40%';
+      color = '#f97316'; // Orange
+      text = 'Слабый пароль (добавьте цифры или разные регистры)';
+    } else if (score === 3) {
+      width = '60%';
+      color = '#eab308'; // Yellow
+      text = 'Средний пароль (добавьте заглавные буквы или спецсимволы)';
+    } else if (score === 4) {
+      width = '80%';
+      color = '#6366f1'; // Indigo (var(--accent))
+      text = 'Надежный пароль';
+    } else if (score === 5) {
+      width = '100%';
+      color = '#10b981'; // Green (var(--green))
+      text = 'Отличный пароль!';
+    }
+
+    strengthBar.style.width = width;
+    strengthBar.style.background = color;
+    strengthText.style.color = color;
+    strengthText.textContent = text;
+  });
+
+  pwdInput2.addEventListener('input', () => {
+    if (pwdInput2.value && pwdInput.value !== pwdInput2.value) {
+      pwdInput2.classList.add('error');
+    } else {
+      pwdInput2.classList.remove('error');
+    }
   });
 </script>
 </body>
