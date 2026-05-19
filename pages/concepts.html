@@ -32,6 +32,12 @@
           <div class="lang-tabs" id="lang-tabs"></div>
         </div>
         <div class="code-block" id="code-block"></div>
+        <div class="theory-section" id="theory-section" style="padding: 28px; border-top: 1px solid var(--border); background: rgba(255,255,255,0.015);">
+          <h3 style="color:#fff; font-size: 16px; font-weight: 600; margin-bottom: 12px; display:flex; align-items:center; gap:8px;">
+            <span>📖</span> Теоретическая справка
+          </h3>
+          <div id="theory-content" style="color: var(--muted); font-size: 14.5px; line-height: 1.75;"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -107,6 +113,7 @@
     document.getElementById('detail-title').textContent = cur.title;
     document.getElementById('detail-meta').innerHTML = makeTag(cur.tag)+makeDifficulty(cur.difficulty);
     document.getElementById('detail-desc').textContent = cur.desc;
+    document.getElementById('theory-content').innerHTML = cur.theory || '';
     renderTabs(); renderCode();
   }
 
