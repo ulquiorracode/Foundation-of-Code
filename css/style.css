@@ -59,6 +59,13 @@ html { scroll-behavior: smooth; }
 .team-hero h1 { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
 .team-hero p { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both; }
 
+.page-hero h1, .pricing-hero h1 { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.page-hero p, .pricing-hero p { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both; }
+
+.concepts-layout, #roadmaps-grid, .pricing-grid, .articles-layout, .langs-grid, .value-grid, .timeline {
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.24s both;
+}
+
 body {
   background: var(--bg);
   color: var(--text);

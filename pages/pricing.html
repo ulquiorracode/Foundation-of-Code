@@ -217,10 +217,35 @@
       flex-shrink: 0;
     }
 
+    @keyframes checkmarkPop {
+      0% {
+        transform: scale(0);
+        background: rgba(255, 255, 255, 0.05);
+        color: rgba(255, 255, 255, 0.2);
+      }
+      70% {
+        transform: scale(1.2);
+      }
+      100% {
+        transform: scale(1);
+        background: rgba(16, 185, 129, 0.15);
+        color: var(--green);
+      }
+    }
+
     .feat-icon.yes {
       background: rgba(16, 185, 129, 0.15);
       color: var(--green);
+      animation: checkmarkPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
     }
+
+    .plan-features li:nth-child(1) .feat-icon.yes { animation-delay: 0.15s; }
+    .plan-features li:nth-child(2) .feat-icon.yes { animation-delay: 0.23s; }
+    .plan-features li:nth-child(3) .feat-icon.yes { animation-delay: 0.31s; }
+    .plan-features li:nth-child(4) .feat-icon.yes { animation-delay: 0.39s; }
+    .plan-features li:nth-child(5) .feat-icon.yes { animation-delay: 0.47s; }
+    .plan-features li:nth-child(6) .feat-icon.yes { animation-delay: 0.55s; }
+    .plan-features li:nth-child(7) .feat-icon.yes { animation-delay: 0.63s; }
 
     .feat-icon.no {
       background: rgba(255, 255, 255, 0.05);
@@ -454,29 +479,40 @@
     function renderPricing() {
       document.getElementById('pricing-grid').innerHTML = PRICING.map(p => {
         let price = p.price;
-        if (yearly && price !== '0 ₽') {
+        const isFree = price === 'Бесплатно' || price === '0 ₽';
+        if (yearly && !isFree) {
           const num = parseInt(price);
           price = Math.round(num * 0.8 * 12) + ' ₽';
         }
-        const period = yearly && p.price !== '0 ₽' ? 'в год' : p.period;
+        const period = yearly && !isFree ? 'в год' : p.period;
         const features = p.features.map(f => `
         <li class="${f.ok ? 'ok' : ''}">
           <span class="feat-icon ${f.ok ? 'yes' : 'no'}">${f.ok ? '✓' : '−'}</span>
           ${f.text}
         </li>`).join('');
+        
+        let priceHtml = '';
+        if (isFree) {
+          priceHtml = `<span class="amount" style="font-size: 38px; font-weight: 800; letter-spacing: -0.01em;">Бесплатно</span>`;
+        } else {
+          priceHtml = `
+            <span class="currency">₽</span>
+            <span class="amount">${price.replace(' ₽', '')}</span>
+          `;
+        }
+        
         return `
         <div class="plan-card ${p.highlight ? 'highlighted' : ''}">
           ${p.badge ? `<div class="plan-badge">${p.badge}</div>` : ''}
           <div class="plan-name">${p.name}</div>
           <div class="plan-price">
-            ${price !== '0 ₽' ? '<span class="currency">₽</span>' : ''}
-            <span class="amount">${price === '0 ₽' ? '0' : price.replace(' ₽', '')}</span>
+            ${priceHtml}
           </div>
           <div class="plan-period">${period}</div>
           <div class="plan-desc">${p.desc}</div>
           <ul class="plan-features">${features}</ul>
           <button class="plan-btn ${p.highlight ? 'primary' : 'ghost'}" onclick="window.location.href='register.html'">
-            ${p.price === '0 ₽' ? 'Начать бесплатно' : 'Выбрать ' + p.name}
+            ${isFree ? 'Начать бесплатно' : 'Выбрать ' + p.name}
           </button>
         </div>`;
       }).join('');

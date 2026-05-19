@@ -483,8 +483,8 @@ const TEAM = [
 
 const PRICING = [
   {
-    name: "Бесплатно",
-    price: "0 ₽",
+    name: "Базовый",
+    price: "Бесплатно",
     period: "навсегда",
     color: "#6366f1",
     highlight: false,
