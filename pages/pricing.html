@@ -174,11 +174,18 @@
       margin-bottom: 16px;
     }
 
+    .plan-header {
+      display: flex;
+      flex-direction: column;
+      height: 190px;
+      margin-bottom: 28px;
+    }
+
     .plan-desc {
       color: rgba(255, 255, 255, 0.45);
       font-size: 14px;
       line-height: 1.5;
-      margin-bottom: 28px;
+      margin-top: auto;
       padding-bottom: 28px;
       border-bottom: 1px solid var(--border);
     }
@@ -504,12 +511,14 @@
         return `
         <div class="plan-card ${p.highlight ? 'highlighted' : ''}">
           ${p.badge ? `<div class="plan-badge">${p.badge}</div>` : ''}
-          <div class="plan-name">${p.name}</div>
-          <div class="plan-price">
-            ${priceHtml}
+          <div class="plan-header">
+            <div class="plan-name">${p.name}</div>
+            <div class="plan-price">
+              ${priceHtml}
+            </div>
+            <div class="plan-period">${period}</div>
+            <div class="plan-desc">${p.desc}</div>
           </div>
-          <div class="plan-period">${period}</div>
-          <div class="plan-desc">${p.desc}</div>
           <ul class="plan-features">${features}</ul>
           <button class="plan-btn ${p.highlight ? 'primary' : 'ghost'}" onclick="window.location.href='register.html'">
             ${isFree ? 'Начать бесплатно' : 'Выбрать ' + p.name}
