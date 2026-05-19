@@ -143,6 +143,10 @@
           <div class="form-group">
             <label class="form-label">Email</label>
             <input class="form-input" type="email" placeholder="you@example.com" id="reg-email">
+            <!-- Email live hint -->
+            <div id="email-hint-wrapper" style="margin-top: 8px; display: none;">
+              <div id="email-hint-text" style="font-size: 11px; font-weight: 500;"></div>
+            </div>
           </div>
           <div class="form-group">
             <label class="form-label">Пароль</label>
@@ -344,21 +348,77 @@
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const regEmail = document.getElementById('reg-email');
   const loginEmail = document.getElementById('login-email');
+  const emailHintWrapper = document.getElementById('email-hint-wrapper');
+  const emailHintText = document.getElementById('email-hint-text');
 
-  // Registration Email
-  regEmail.addEventListener('blur', () => {
-    if (regEmail.value && !emailRegex.test(regEmail.value.trim())) {
-      regEmail.classList.add('error');
-    } else {
-      regEmail.classList.remove('error');
-    }
-  });
+  // Registration Email - Detailed Real-time Hint
   regEmail.addEventListener('input', () => {
-    if (regEmail.classList.contains('error')) {
-      if (!regEmail.value || emailRegex.test(regEmail.value.trim())) {
-        regEmail.classList.remove('error');
-      }
+    const val = regEmail.value.trim();
+    if (!val) {
+      emailHintWrapper.style.display = 'none';
+      regEmail.classList.remove('error');
+      return;
     }
+    
+    emailHintWrapper.style.display = 'block';
+    
+    // 1. Проверка на наличие символа @
+    if (!val.includes('@')) {
+      emailHintText.textContent = 'В адресе отсутствует символ @';
+      emailHintText.style.color = '#f43f5e'; // Red
+      regEmail.classList.add('error');
+      return;
+    }
+    
+    // 2. Проверка части перед @
+    const parts = val.split('@');
+    const localPart = parts[0];
+    const domainPart = parts.slice(1).join('@');
+    
+    if (!localPart) {
+      emailHintText.textContent = 'Введите имя пользователя перед @';
+      emailHintText.style.color = '#f43f5e'; // Red
+      regEmail.classList.add('error');
+      return;
+    }
+    
+    // 3. Проверка наличия домена после @
+    if (!domainPart) {
+      emailHintText.textContent = 'Укажите домен после @ (например, gmail.com)';
+      emailHintText.style.color = '#f97316'; // Orange
+      regEmail.classList.add('error');
+      return;
+    }
+    
+    // 4. Проверка точки и доменной зоны
+    const dotIndex = domainPart.lastIndexOf('.');
+    if (dotIndex === -1 || dotIndex === domainPart.length - 1) {
+      emailHintText.textContent = 'Укажите доменную зону (например, .ru или .com)';
+      emailHintText.style.color = '#eab308'; // Yellow
+      regEmail.classList.add('error');
+      return;
+    }
+    
+    const tld = domainPart.substring(dotIndex + 1);
+    if (tld.length < 2) {
+      emailHintText.textContent = 'Доменная зона должна быть не короче 2 символов';
+      emailHintText.style.color = '#eab308'; // Yellow
+      regEmail.classList.add('error');
+      return;
+    }
+    
+    // 5. Проверка финального формата
+    if (!emailRegex.test(val)) {
+      emailHintText.textContent = 'Email содержит некорректные символы';
+      emailHintText.style.color = '#f43f5e';
+      regEmail.classList.add('error');
+      return;
+    }
+    
+    // Все проверки пройдены
+    emailHintText.textContent = 'Email введен корректно!';
+    emailHintText.style.color = '#10b981'; // Green
+    regEmail.classList.remove('error');
   });
 
   // Login Email
