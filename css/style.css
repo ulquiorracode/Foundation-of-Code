@@ -292,7 +292,7 @@ button { font-family: var(--sans); cursor: pointer; }
 }
 .code-line { display: flex; gap: 16px; }
 .code-line .ln { color: rgba(255,255,255,0.15); min-width: 20px; text-align: right; user-select: none; }
-.code-line .ct { color: #e2e8f0; }
+.code-line .ct { color: #e2e8f0; white-space: pre-wrap; tab-size: 4; -moz-tab-size: 4; }
 .code-line .ct.comment { color: #6b7280; }
 
 /* ROADMAP DETAIL */
