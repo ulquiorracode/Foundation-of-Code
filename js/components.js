@@ -6,7 +6,7 @@ function makeTag(label, color) {
 }
 
 function makeDifficulty(level) {
-  const dots = [1,2,3].map(n => `<span class="${n <= level ? 'on' : 'off'}"></span>`).join('');
+  const dots = [1, 2, 3].map(n => `<span class="${n <= level ? 'on' : 'off'}"></span>`).join('');
   return `<span class="difficulty">${dots}</span>`;
 }
 
@@ -30,12 +30,12 @@ function makeRoadmapCard(roadmap, base) {
   const b = base || 'pages/';
   const steps = roadmap.steps.slice(0, 3).map((s, i) =>
     `<div class="step-row">
-       <span class="step-num" style="background:${roadmap.color}22;color:${roadmap.color}">${i+1}</span>
+       <span class="step-num" style="background:${roadmap.color}22;color:${roadmap.color}">${i + 1}</span>
        <span class="step-title">${s.title}</span>
      </div>`
   ).join('');
   const more = roadmap.steps.length > 3
-    ? `<div class="step-title" style="margin-left:30px;font-size:12px">+ ещё ${roadmap.steps.length-3} шага</div>` : '';
+    ? `<div class="step-title" style="margin-left:30px;font-size:12px">+ ещё ${roadmap.steps.length - 3} шага</div>` : '';
   return `
   <a href="${b}roadmaps.html" class="roadmap-card"
      onmouseenter="this.style.background='${roadmap.color}10';this.style.borderColor='${roadmap.color}44'"
@@ -67,11 +67,11 @@ function _buildNavbar(links, logoHref, ctaHref) {
   // Auth-aware CTA
   const _navUser = typeof Auth !== 'undefined' ? Auth.current() : null;
   const _ctaHtml = _navUser
-    ? `<a href="${ctaHref.replace('register.html','profile.html').replace('pages/register.html','pages/profile.html')}" class="nav-cta" style="display:flex;align-items:center;gap:7px">
+    ? `<a href="${ctaHref.replace('register.html', 'profile.html').replace('pages/register.html', 'pages/profile.html')}" class="nav-cta" style="display:flex;align-items:center;gap:7px">
          <span style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0">${Auth.avatarLetter(_navUser)}</span>
          ${_navUser.firstName}
        </a>`
-    : `<a href="${ctaHref}" class="nav-cta">Войти →</a>`;
+    : `<a href="${ctaHref}" class="nav-cta">Войти</a>`;
   document.getElementById('navbar').innerHTML = `
     <div class="container">
       <a href="${logoHref}" class="nav-logo">
@@ -85,25 +85,25 @@ function _buildNavbar(links, logoHref, ctaHref) {
 
 function renderNavbar(activePage) {
   _buildNavbar([
-    { href: '../index.html',    label: 'Главная',   active: activePage==='home' },
-    { href: 'concepts.html',    label: 'Концепции', active: activePage==='concepts' },
-    { href: 'roadmaps.html',    label: 'Роудмапы',  active: activePage==='roadmaps' },
-    { href: 'languages.html',   label: 'Языки',     active: activePage==='languages' },
-    { href: 'articles.html',    label: 'Статьи',    active: activePage==='articles' },
-    { href: 'pricing.html',     label: 'Цены',      active: activePage==='pricing' },
-    { href: '../pages/about.html', label: 'О нас',  active: activePage==='about' },
+    { href: '../index.html', label: 'Главная', active: activePage === 'home' },
+    { href: 'concepts.html', label: 'Концепции', active: activePage === 'concepts' },
+    { href: 'roadmaps.html', label: 'Роудмапы', active: activePage === 'roadmaps' },
+    { href: 'languages.html', label: 'Языки', active: activePage === 'languages' },
+    { href: 'articles.html', label: 'Статьи', active: activePage === 'articles' },
+    { href: 'pricing.html', label: 'Цены', active: activePage === 'pricing' },
+    { href: '../pages/about.html', label: 'О нас', active: activePage === 'about' },
   ], '../index.html', 'register.html');
 }
 
 function renderNavbarRoot(activePage) {
   _buildNavbar([
-    { href: 'index.html',          label: 'Главная',   active: activePage==='home' },
-    { href: 'pages/concepts.html', label: 'Концепции', active: activePage==='concepts' },
-    { href: 'pages/roadmaps.html', label: 'Роудмапы',  active: activePage==='roadmaps' },
-    { href: 'pages/languages.html',label: 'Языки',     active: activePage==='languages' },
-    { href: 'pages/articles.html', label: 'Статьи',    active: activePage==='articles' },
-    { href: 'pages/pricing.html',  label: 'Цены',      active: activePage==='pricing' },
-    { href: 'pages/about.html',    label: 'О нас',     active: activePage==='about' },
+    { href: 'index.html', label: 'Главная', active: activePage === 'home' },
+    { href: 'pages/concepts.html', label: 'Концепции', active: activePage === 'concepts' },
+    { href: 'pages/roadmaps.html', label: 'Роудмапы', active: activePage === 'roadmaps' },
+    { href: 'pages/languages.html', label: 'Языки', active: activePage === 'languages' },
+    { href: 'pages/articles.html', label: 'Статьи', active: activePage === 'articles' },
+    { href: 'pages/pricing.html', label: 'Цены', active: activePage === 'pricing' },
+    { href: 'pages/about.html', label: 'О нас', active: activePage === 'about' },
   ], 'index.html', 'pages/register.html');
 }
 
