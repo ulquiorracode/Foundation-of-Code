@@ -289,7 +289,7 @@
     .faq-q .arrow {
       color: var(--muted);
       font-size: 18px;
-      transition: transform 0.2s;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .faq-q.open .arrow {
@@ -300,12 +300,21 @@
       color: var(--muted);
       font-size: 15px;
       line-height: 1.7;
-      padding-bottom: 20px;
-      display: none;
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+      overflow: hidden;
+      opacity: 0;
     }
 
     .faq-a.open {
-      display: block;
+      grid-template-rows: 1fr;
+      opacity: 1;
+    }
+
+    .faq-a-inner {
+      min-height: 0;
+      padding-bottom: 20px;
     }
 
     .guarantee {
@@ -393,31 +402,31 @@
           <div class="faq-item">
             <button class="faq-q" onclick="toggleFaq(this)">Можно ли начать бесплатно? <span
                 class="arrow">+</span></button>
-            <div class="faq-a">Да. Тариф «Бесплатно» включает все концепции, статьи, роудмапы и страницы языков. Никакой
-              кредитной карты не нужно.</div>
+            <div class="faq-a"><div class="faq-a-inner">Да. Тариф «Бесплатно» включает все концепции, статьи, роудмапы и страницы языков. Никакой
+              кредитной карты не нужно.</div></div>
           </div>
           <div class="faq-item">
             <button class="faq-q" onclick="toggleFaq(this)">Что даёт Pro-подписка? <span class="arrow">+</span></button>
-            <div class="faq-a">Pro открывает сохранение прогресса, личный кабинет с историей активности и возможность
-              отслеживать несколько роудмапов одновременно.</div>
+            <div class="faq-a"><div class="faq-a-inner">Pro открывает сохранение прогресса, личный кабинет с историей активности и возможность
+              отслеживать несколько роудмапов одновременно.</div></div>
           </div>
           <div class="faq-item">
             <button class="faq-q" onclick="toggleFaq(this)">Как работает тариф Team? <span
                 class="arrow">+</span></button>
-            <div class="faq-a">Team предназначен для учебных групп и кафедр. Включает всё из Pro плюс приоритетную
-              поддержку. Свяжитесь с нами для подключения группы.</div>
+            <div class="faq-a"><div class="faq-a-inner">Team предназначен для учебных групп и кафедр. Включает всё из Pro плюс приоритетную
+              поддержку. Свяжитесь с нами для подключения группы.</div></div>
           </div>
           <div class="faq-item">
             <button class="faq-q" onclick="toggleFaq(this)">Можно ли отменить подписку? <span
                 class="arrow">+</span></button>
-            <div class="faq-a">Да, в любой момент. Доступ сохраняется до конца оплаченного периода. При отмене
-              автоматического продления нет.</div>
+            <div class="faq-a"><div class="faq-a-inner">Да, в любой момент. Доступ сохраняется до конца оплаченного периода. При отмене
+              автоматического продления нет.</div></div>
           </div>
           <div class="faq-item">
             <button class="faq-q" onclick="toggleFaq(this)">Есть ли скидки для студентов? <span
                 class="arrow">+</span></button>
-            <div class="faq-a">Да! Студентам ИВТиПТ предоставляется дополнительная скидка 30% при подтверждении студенческого
-              статуса. Напишите нам на vashihdeneguzhenet@sfedu.ru.</div>
+            <div class="faq-a"><div class="faq-a-inner">Да! Студентам ИВТиПТ предоставляется дополнительная скидка 30% при подтверждении студенческого
+              статуса. Напишите нам на vashihdeneguzhenet@sfedu.ru.</div></div>
           </div>
         </div>
       </section>
