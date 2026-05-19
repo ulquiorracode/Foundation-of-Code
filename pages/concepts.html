@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Концепции – Foundation of Code</title>
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 </head>
 <body>
 <nav class="navbar" id="navbar"></nav>
@@ -30,6 +32,12 @@
           <div class="lang-tabs" id="lang-tabs"></div>
         </div>
         <div class="code-block" id="code-block"></div>
+        <div class="theory-section" id="theory-section" style="padding: 28px; border-top: 1px solid var(--border); background: rgba(255,255,255,0.015);">
+          <h3 style="color:#fff; font-size: 16px; font-weight: 600; margin-bottom: 12px; display:flex; align-items:center; gap:8px;">
+            <span>📖</span> Теоретическая справка
+          </h3>
+          <div id="theory-content" style="color: var(--muted); font-size: 14.5px; line-height: 1.75;"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -84,10 +92,19 @@
   }
 
   function renderCode() {
-    const lines = (cur.code[curLang]||'').split('\n');
-    document.getElementById('code-block').innerHTML = lines.map((line,i) => {
-      const isCmt = line.trim().startsWith('//')||line.trim().startsWith('#');
-      return `<div class="code-line"><span class="ln">${i+1}</span><span class="ct ${isCmt?'comment':''}">${esc(line)}</span></div>`;
+    const rawCode = cur.code[curLang] || '';
+    const lang = curLang.toLowerCase();
+    
+    let highlighted;
+    try {
+      highlighted = hljs.highlight(rawCode, { language: lang }).value;
+    } catch (e) {
+      highlighted = esc(rawCode);
+    }
+    
+    const lines = highlighted.split('\n');
+    document.getElementById('code-block').innerHTML = lines.map((line, i) => {
+      return `<div class="code-line"><span class="ln">${i+1}</span><span class="ct">${line}</span></div>`;
     }).join('');
   }
 
@@ -96,6 +113,7 @@
     document.getElementById('detail-title').textContent = cur.title;
     document.getElementById('detail-meta').innerHTML = makeTag(cur.tag)+makeDifficulty(cur.difficulty);
     document.getElementById('detail-desc').textContent = cur.desc;
+    document.getElementById('theory-content').innerHTML = cur.theory || '';
     renderTabs(); renderCode();
   }
 

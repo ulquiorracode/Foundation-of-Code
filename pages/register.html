@@ -70,10 +70,71 @@
       border-radius: 10px; color: var(--green); padding: 14px 16px;
       font-size: 14px; text-align: center; display: none; margin-top: 16px;
     }
-    .check-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 18px; }
-    .check-row input[type=checkbox] { margin-top: 2px; accent-color: var(--accent); flex-shrink: 0; }
-    .check-row label { color: rgba(255,255,255,0.45); font-size: 13px; line-height: 1.5; }
-    .check-row label a { color: #a5b4fc; }
+    .check-container {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .check-container input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+    .checkmark {
+      width: 18px;
+      height: 18px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 5px;
+      flex-shrink: 0;
+      position: relative;
+      transition: all 0.2s;
+      margin-top: 2px;
+    }
+    .check-container:hover input ~ .checkmark {
+      border-color: rgba(99, 102, 241, 0.4);
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .check-container input:checked ~ .checkmark {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+    .check-container input:checked ~ .checkmark:after {
+      display: block;
+    }
+    .check-container .checkmark:after {
+      left: 5px;
+      top: 2px;
+      width: 5px;
+      height: 9px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+    .check-text {
+      color: rgba(255, 255, 255, 0.45);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .check-text a {
+      color: #a5b4fc;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .check-text a:hover {
+      color: #c7d2fe;
+      text-decoration: underline;
+    }
 
     .field-hint { font-size: 11.5px; color: rgba(255,255,255,0.22); margin-top: 5px; }
 
@@ -143,20 +204,32 @@
           <div class="form-group">
             <label class="form-label">Email</label>
             <input class="form-input" type="email" placeholder="you@example.com" id="reg-email">
+            <!-- Email live hint -->
+            <div id="email-hint-wrapper" style="margin-top: 8px; display: none;">
+              <div id="email-hint-text" style="font-size: 11px; font-weight: 500;"></div>
+            </div>
           </div>
           <div class="form-group">
             <label class="form-label">Пароль</label>
             <input class="form-input" type="password" placeholder="Минимум 8 символов" id="reg-password">
+            <!-- Password strength indicator -->
+            <div id="password-strength-wrapper" style="margin-top: 8px; display: none;">
+              <div style="height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden;">
+                <div id="password-strength-bar" style="height: 100%; width: 0%; transition: all 0.3s; background: #f43f5e;"></div>
+              </div>
+              <div id="password-strength-text" style="font-size: 11px; margin-top: 4px; font-weight: 500;"></div>
+            </div>
             <div class="field-hint">Буквы, цифры и спецсимволы</div>
           </div>
           <div class="form-group">
             <label class="form-label">Повторите пароль</label>
             <input class="form-input" type="password" placeholder="Повторите пароль" id="reg-password2">
           </div>
-          <div class="check-row">
+          <label class="check-container">
             <input type="checkbox" id="agree">
-            <label for="agree">Я соглашаюсь с <a href="#">условиями использования</a> и <a href="#">политикой конфиденциальности</a></label>
-          </div>
+            <span class="checkmark"></span>
+            <span class="check-text">Я соглашаюсь с <a href="terms.html" target="_blank">условиями использования</a> и <a href="privacy.html" target="_blank">политикой конфиденциальности</a></span>
+          </label>
           <button class="submit-btn" onclick="doRegister()">Создать аккаунт</button>
           <div class="success-msg" id="reg-success">✅ Аккаунт создан! Переходим в профиль...</div>
           <div class="auth-footer">Уже есть аккаунт? <a onclick="switchTab('login')">Войти</a></div>
@@ -269,6 +342,161 @@
     if (e.key !== 'Enter') return;
     const regVisible = document.getElementById('form-reg').style.display !== 'none';
     if (regVisible) doRegister(); else doLogin();
+  });
+
+  // Live password validation
+  const pwdInput = document.getElementById('reg-password');
+  const pwdInput2 = document.getElementById('reg-password2');
+  const strengthWrapper = document.getElementById('password-strength-wrapper');
+  const strengthBar = document.getElementById('password-strength-bar');
+  const strengthText = document.getElementById('password-strength-text');
+
+  pwdInput.addEventListener('input', () => {
+    const val = pwdInput.value;
+    if (!val) {
+      strengthWrapper.style.display = 'none';
+      return;
+    }
+    strengthWrapper.style.display = 'block';
+
+    let score = 0;
+    if (val.length >= 8) score++;
+    if (/[a-z]/.test(val)) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/\d/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+
+    let width = '20%';
+    let color = '#f43f5e'; // Red
+    let text = 'Очень слабый пароль';
+
+    if (val.length < 8) {
+      width = '20%';
+      color = '#f43f5e';
+      text = 'Пароль слишком короткий (минимум 8 символов)';
+    } else if (score === 2) {
+      width = '40%';
+      color = '#f97316'; // Orange
+      text = 'Слабый пароль (добавьте цифры или разные регистры)';
+    } else if (score === 3) {
+      width = '60%';
+      color = '#eab308'; // Yellow
+      text = 'Средний пароль (добавьте заглавные буквы или спецсимволы)';
+    } else if (score === 4) {
+      width = '80%';
+      color = '#6366f1'; // Indigo (var(--accent))
+      text = 'Надежный пароль';
+    } else if (score === 5) {
+      width = '100%';
+      color = '#10b981'; // Green (var(--green))
+      text = 'Отличный пароль!';
+    }
+
+    strengthBar.style.width = width;
+    strengthBar.style.background = color;
+    strengthText.style.color = color;
+    strengthText.textContent = text;
+  });
+
+  pwdInput2.addEventListener('input', () => {
+    if (pwdInput2.value && pwdInput.value !== pwdInput2.value) {
+      pwdInput2.classList.add('error');
+    } else {
+      pwdInput2.classList.remove('error');
+    }
+  });
+
+  // Live email validation (Lazy pattern for best UX)
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const regEmail = document.getElementById('reg-email');
+  const loginEmail = document.getElementById('login-email');
+  const emailHintWrapper = document.getElementById('email-hint-wrapper');
+  const emailHintText = document.getElementById('email-hint-text');
+
+  // Registration Email - Detailed Real-time Hint
+  regEmail.addEventListener('input', () => {
+    const val = regEmail.value.trim();
+    if (!val) {
+      emailHintWrapper.style.display = 'none';
+      regEmail.classList.remove('error');
+      return;
+    }
+    
+    emailHintWrapper.style.display = 'block';
+    
+    // 1. Проверка на наличие символа @
+    if (!val.includes('@')) {
+      emailHintText.textContent = 'В адресе отсутствует символ @';
+      emailHintText.style.color = '#f43f5e'; // Red
+      regEmail.classList.add('error');
+      return;
+    }
+    
+    // 2. Проверка части перед @
+    const parts = val.split('@');
+    const localPart = parts[0];
+    const domainPart = parts.slice(1).join('@');
+    
+    if (!localPart) {
+      emailHintText.textContent = 'Введите имя пользователя перед @';
+      emailHintText.style.color = '#f43f5e'; // Red
+      regEmail.classList.add('error');
+      return;
+    }
+    
+    // 3. Проверка наличия домена после @
+    if (!domainPart) {
+      emailHintText.textContent = 'Укажите домен после @ (например, gmail.com)';
+      emailHintText.style.color = '#f97316'; // Orange
+      regEmail.classList.add('error');
+      return;
+    }
+    
+    // 4. Проверка точки и доменной зоны
+    const dotIndex = domainPart.lastIndexOf('.');
+    if (dotIndex === -1 || dotIndex === domainPart.length - 1) {
+      emailHintText.textContent = 'Укажите доменную зону (например, .ru или .com)';
+      emailHintText.style.color = '#eab308'; // Yellow
+      regEmail.classList.add('error');
+      return;
+    }
+    
+    const tld = domainPart.substring(dotIndex + 1);
+    if (tld.length < 2) {
+      emailHintText.textContent = 'Доменная зона должна быть не короче 2 символов';
+      emailHintText.style.color = '#eab308'; // Yellow
+      regEmail.classList.add('error');
+      return;
+    }
+    
+    // 5. Проверка финального формата
+    if (!emailRegex.test(val)) {
+      emailHintText.textContent = 'Email содержит некорректные символы';
+      emailHintText.style.color = '#f43f5e';
+      regEmail.classList.add('error');
+      return;
+    }
+    
+    // Все проверки пройдены
+    emailHintText.textContent = 'Email введен корректно!';
+    emailHintText.style.color = '#10b981'; // Green
+    regEmail.classList.remove('error');
+  });
+
+  // Login Email
+  loginEmail.addEventListener('blur', () => {
+    if (loginEmail.value && !emailRegex.test(loginEmail.value.trim())) {
+      loginEmail.classList.add('error');
+    } else {
+      loginEmail.classList.remove('error');
+    }
+  });
+  loginEmail.addEventListener('input', () => {
+    if (loginEmail.classList.contains('error')) {
+      if (!loginEmail.value || emailRegex.test(loginEmail.value.trim())) {
+        loginEmail.classList.remove('error');
+      }
+    }
   });
 </script>
 </body>
