@@ -144,6 +144,10 @@ function renderFooter(isRoot) {
       </div>
       <div class="footer-bottom">
         <span>© 2026 Foundation of Code · Университетский проект</span>
+        <div style="display:flex;gap:16px;">
+          <a href="${b}pages/terms.html" style="color:rgba(255,255,255,0.25);text-decoration:none;font-size:13px;transition:color 0.15s" onmouseenter="this.style.color='#a5b4fc'" onmouseleave="this.style.color='rgba(255,255,255,0.25)'">Условия использования</a>
+          <a href="${b}pages/privacy.html" style="color:rgba(255,255,255,0.25);text-decoration:none;font-size:13px;transition:color 0.15s" onmouseenter="this.style.color='#a5b4fc'" onmouseleave="this.style.color='rgba(255,255,255,0.25)'">Конфиденциальность</a>
+        </div>
         <span class="version">MVP v0.1.0</span>
       </div>
     </div>`;
