@@ -339,6 +339,43 @@
       pwdInput2.classList.remove('error');
     }
   });
+
+  // Live email validation (Lazy pattern for best UX)
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const regEmail = document.getElementById('reg-email');
+  const loginEmail = document.getElementById('login-email');
+
+  // Registration Email
+  regEmail.addEventListener('blur', () => {
+    if (regEmail.value && !emailRegex.test(regEmail.value.trim())) {
+      regEmail.classList.add('error');
+    } else {
+      regEmail.classList.remove('error');
+    }
+  });
+  regEmail.addEventListener('input', () => {
+    if (regEmail.classList.contains('error')) {
+      if (!regEmail.value || emailRegex.test(regEmail.value.trim())) {
+        regEmail.classList.remove('error');
+      }
+    }
+  });
+
+  // Login Email
+  loginEmail.addEventListener('blur', () => {
+    if (loginEmail.value && !emailRegex.test(loginEmail.value.trim())) {
+      loginEmail.classList.add('error');
+    } else {
+      loginEmail.classList.remove('error');
+    }
+  });
+  loginEmail.addEventListener('input', () => {
+    if (loginEmail.classList.contains('error')) {
+      if (!loginEmail.value || emailRegex.test(loginEmail.value.trim())) {
+        loginEmail.classList.remove('error');
+      }
+    }
+  });
 </script>
 </body>
 </html>
