@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Концепции – Foundation of Code</title>
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 </head>
 <body>
 <nav class="navbar" id="navbar"></nav>
@@ -84,10 +86,19 @@
   }
 
   function renderCode() {
-    const lines = (cur.code[curLang]||'').split('\n');
-    document.getElementById('code-block').innerHTML = lines.map((line,i) => {
-      const isCmt = line.trim().startsWith('//')||line.trim().startsWith('#');
-      return `<div class="code-line"><span class="ln">${i+1}</span><span class="ct ${isCmt?'comment':''}">${esc(line)}</span></div>`;
+    const rawCode = cur.code[curLang] || '';
+    const lang = curLang.toLowerCase();
+    
+    let highlighted;
+    try {
+      highlighted = hljs.highlight(rawCode, { language: lang }).value;
+    } catch (e) {
+      highlighted = esc(rawCode);
+    }
+    
+    const lines = highlighted.split('\n');
+    document.getElementById('code-block').innerHTML = lines.map((line, i) => {
+      return `<div class="code-line"><span class="ln">${i+1}</span><span class="ct">${line}</span></div>`;
     }).join('');
   }
 
