@@ -522,6 +522,119 @@ body {
   </p>
 </div>
 
+<!-- Page break for Glossary -->
+<div style="page-break-before: always; margin-top: 30px;">
+  <div class="doc-header">
+    <div>
+      <h1 class="doc-title-main">FOUNDATION OF CODE</h1>
+      <div class="doc-subtitle">Технический глоссарий проекта (Шпаргалка для команды)</div>
+    </div>
+    <div style="text-align: right;">
+      <div class="doc-subtitle">Глоссарий терминов</div>
+      <div style="font-size: 11px; color: #64748b; font-weight: 500; margin-top: 2px;">ЮФУ • ИВТиПТ • 2026</div>
+    </div>
+  </div>
+  
+  <div class="intro-card" style="margin-bottom: 20px;">
+    <strong>Зачем это нужно:</strong> Если преподаватель спросит значение какого-то слова из выступления, используйте эту таблицу для быстрого и уверенного ответа.
+  </div>
+
+  <table style="width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px;">
+    <thead>
+      <tr style="background-color: #0284c7; color: #ffffff; text-align: left;">
+        <th style="padding: 10px; border: 1px solid #cbd5e1; font-weight: 700; width: 30%;">Термин / Баззворд</th>
+        <th style="padding: 10px; border: 1px solid #cbd5e1; font-weight: 700; width: 70%;">Что это означает простыми словами и как связано с нашим проектом</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; background-color: #f8fafc;">SPA (Single Page Application)</td>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">Одностраничное приложение. Сайт загружается один раз, а разделы переключаются мгновенно без перезагрузки всей страницы. У нас это реализовано на чистом JavaScript.</td>
+      </tr>
+      <tr style="background-color: #f8fafc;">
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; background-color: #f1f5f9;">MVP (Minimum Viable Product)</td>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">Минимально жизнеспособный продукт. Первая рабочая версия сайта с базовыми функциями, готовая к показу пользователям (в нашем случае — прототип энциклопедии).</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; background-color: #f8fafc;">User Flow</td>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">Путь пользователя. Логический маршрут переходов человека по сайту: от входа на главную до изучения концепций или авторизации.</td>
+      </tr>
+      <tr style="background-color: #f8fafc;">
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; background-color: #f1f5f9;">UI Kit и Дизайн-система</td>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">Набор готовых графических элементов (кнопки, карточки, шрифты, цвета), созданный в Figma для обеспечения единого визуального стиля при верстке.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; background-color: #f8fafc;">Pixel Perfect</td>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">Верстка «пиксель-в-пиксель». Максимально точный перенос дизайнерского макета из Figma в рабочий HTML/CSS код.</td>
+      </tr>
+      <tr style="background-color: #f8fafc;">
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; background-color: #f1f5f9;">DOM (Document Object Model)</td>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">Объектная модель документа. Структура элементов страницы (тегов HTML), которой мы динамически управляем (перерисовываем разделы) с помощью JavaScript.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; background-color: #f8fafc;">Runtime (Среда выполнения)</td>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">Среда, в которой выполняется программа во время работы. Влияет на скорость выполнения кода и управление ресурсами компьютера.</td>
+      </tr>
+      <tr style="background-color: #f8fafc;">
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; background-color: #f1f5f9;">LocalStorage API</td>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">Локальное хранилище в браузере пользователя. Позволяет сайту сохранять информацию (например, прогресс обучения или статус входа) даже после закрытия вкладки.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; background-color: #f8fafc;">Data Persistence (Персистентность)</td>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">Сохраняемость данных. Свойство информации оставаться доступной между сеансами работы (у нас это обеспечивается записью в LocalStorage).</td>
+      </tr>
+      <tr style="background-color: #f8fafc;">
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; background-color: #f1f5f9;">Computer Science</td>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">Компьютерные науки. Теоретические основы вычислений, архитектуры систем, алгоритмов и управления памятью.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; background-color: #f8fafc;">Декомпозиция</td>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">Разделение большой сложной темы (или задачи) на мелкие и понятные части. На этом принципе построена наша энциклопедия.</td>
+      </tr>
+      <tr style="background-color: #f8fafc;">
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; background-color: #f1f5f9;">Аллокация памяти</td>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">Процесс выделения оперативной памяти компьютера под переменные и объекты во время выполнения программы.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; background-color: #f8fafc;">Стек и Куча (Stack & Heap)</td>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">Две основные области оперативной памяти: Стек — быстрый, для простых переменных; Куча — большая и динамическая, для сложных объектов. Разницу между ними мы объясняем на платформе.</td>
+      </tr>
+      <tr style="background-color: #f8fafc;">
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; background-color: #f1f5f9;">Бенчмаркинг</td>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">Сравнительный анализ. Процесс изучения конкурентов и их лучших практик для внедрения в свой собственный продукт.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; background-color: #f8fafc;">QA (Quality Assurance)</td>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">Обеспечение качества. Процесс тестирования сайта на ошибки, кроссбраузерность и адаптивность под различные экраны.</td>
+      </tr>
+      <tr style="background-color: #f8fafc;">
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; background-color: #f1f5f9;">Регрессионное тестирование</td>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">Повторная проверка сайта после внесения изменений, чтобы убедиться, что старый функционал работает без сбоев.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; background-color: #f8fafc;">REST API</td>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">Архитектурный стиль взаимодействия клиента и сервера через HTTP-запросы. Запланирован в бэклоге развития нашего бэкенда.</td>
+      </tr>
+      <tr style="background-color: #f8fafc;">
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; background-color: #f1f5f9;">Sandbox (Песочница)</td>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">Безопасная изолированная среда, в которой пользователь может писать и запускать код прямо в браузере.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; background-color: #f8fafc;">Регулярные выражения (RegExp)</td>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">Шаблоны поиска и проверки текста. У нас используются для валидации корректности ввода email-адреса.</td>
+      </tr>
+      <tr style="background-color: #f8fafc;">
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; background-color: #f1f5f9;">Линтер (Линтинг)</td>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">Инструмент автоматической проверки исходного кода на соответствие стандартам форматирования и наличие потенциальных багов.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1; font-weight: 700; background-color: #f8fafc;">Вьюпорт (Viewport)</td>
+        <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">Область экрана устройства, на которой отображается сайт. Наша верстка адаптируется под размер любого вьюпорта.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 </body>
 </html>
 """
