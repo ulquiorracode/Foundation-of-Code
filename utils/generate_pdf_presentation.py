@@ -223,12 +223,14 @@ html, body {
 .border-indigo { border-left: 4px solid #818cf8; }
 .border-emerald { border-left: 4px solid #34d399; }
 .border-violet { border-left: 4px solid #a78bfa; }
+.border-amber { border-left: 4px solid #f59e0b; }
 .border-slate { border: 1px solid rgba(255, 255, 255, 0.08); }
 
 .text-sky { color: #38bdf8; }
 .text-indigo { color: #818cf8; }
 .text-emerald { color: #34d399; }
 .text-violet { color: #a78bfa; }
+.text-amber { color: #f59e0b; }
 
 /* Goal layout (Slide 4) */
 .grid-goals {
@@ -609,8 +611,8 @@ html, body {
       </ul>
     </div>
     <!-- Col 4 -->
-    <div class="team-card border-violet">
-      <div class="team-name text-violet">Георгий Литвиненко</div>
+    <div class="team-card border-amber">
+      <div class="team-name text-amber">Георгий Литвиненко</div>
       <div class="team-role">QA / Release Engineer</div>
       <ul class="team-bullets">
         <li><strong>Quality Assurance:</strong> проведение функционального, регрессионного и кроссбраузерного тестирования.</li>

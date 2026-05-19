@@ -1,215 +1,488 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Цены – Foundation of Code</title>
   <link rel="stylesheet" href="../css/style.css">
   <style>
-    .pricing-hero { padding: 80px 0 60px; text-align: center;
-      background: radial-gradient(ellipse 60% 40% at 50% -5%, rgba(99,102,241,0.15) 0%, transparent 70%); }
-    .pricing-hero .eyebrow { color: #a5b4fc; font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
-    .pricing-hero h1 { color: #fff; font-size: clamp(36px,5vw,56px); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 16px; }
-    .pricing-hero p { color: var(--muted); font-size: 18px; max-width: 520px; margin: 0 auto; }
+    .pricing-hero {
+      padding: 80px 0 60px;
+      text-align: center;
+      background: radial-gradient(ellipse 60% 40% at 50% -5%, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+    }
 
-    .billing-toggle { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 36px 0 56px; }
-    .billing-toggle span { color: var(--muted); font-size: 14px; font-weight: 500; }
-    .billing-toggle span.active { color: #fff; }
+    .pricing-hero .eyebrow {
+      color: #a5b4fc;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .pricing-hero h1 {
+      color: #fff;
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+
+    .pricing-hero p {
+      color: var(--muted);
+      font-size: 18px;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .billing-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin: 36px 0 56px;
+    }
+
+    .billing-toggle span {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .billing-toggle span.active {
+      color: #fff;
+    }
+
     .toggle-switch {
-      width: 48px; height: 26px; border-radius: 13px; background: rgba(99,102,241,0.3);
-      border: 1px solid rgba(99,102,241,0.4); cursor: pointer; position: relative; transition: background 0.2s;
+      width: 48px;
+      height: 26px;
+      border-radius: 13px;
+      background: rgba(99, 102, 241, 0.3);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      cursor: pointer;
+      position: relative;
+      transition: background 0.2s;
     }
-    .toggle-switch.on { background: var(--accent); }
-    .toggle-knob { position: absolute; width: 20px; height: 20px; border-radius: 50%; background: #fff; top: 2px; left: 3px; transition: left 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
-    .toggle-switch.on .toggle-knob { left: 25px; }
-    .save-badge { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3); color: var(--green); border-radius: 100px; padding: 3px 10px; font-size: 12px; font-weight: 600; }
 
-    .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; max-width: 960px; margin: 0 auto; }
+    .toggle-switch.on {
+      background: var(--accent);
+    }
+
+    .toggle-knob {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #fff;
+      top: 2px;
+      left: 3px;
+      transition: left 0.2s;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .toggle-switch.on .toggle-knob {
+      left: 25px;
+    }
+
+    .save-badge {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--green);
+      border-radius: 100px;
+      padding: 3px 10px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
     .plan-card {
-      background: var(--card); border: 1px solid var(--border); border-radius: 20px;
-      padding: 36px 32px; position: relative; transition: all 0.2s;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 32px;
+      position: relative;
+      transition: all 0.2s;
     }
-    .plan-card:hover { transform: translateY(-4px); }
+
+    .plan-card:hover {
+      transform: translateY(-4px);
+    }
+
     .plan-card.highlighted {
-      background: rgba(99,102,241,0.08);
-      border-color: rgba(99,102,241,0.4);
-      box-shadow: 0 0 60px rgba(99,102,241,0.15);
+      background: rgba(99, 102, 241, 0.08);
+      border-color: rgba(99, 102, 241, 0.4);
+      box-shadow: 0 0 60px rgba(99, 102, 241, 0.15);
     }
+
     .plan-badge {
-      position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+      position: absolute;
+      top: -13px;
+      left: 50%;
+      transform: translateX(-50%);
       background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: #fff; font-size: 12px; font-weight: 700; padding: 4px 16px;
-      border-radius: 100px; white-space: nowrap; letter-spacing: 0.04em;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 16px;
+      border-radius: 100px;
+      white-space: nowrap;
+      letter-spacing: 0.04em;
     }
-    .plan-name { color: rgba(255,255,255,0.55); font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
-    .plan-price { display: flex; align-items: baseline; gap: 4px; margin-bottom: 4px; }
-    .plan-price .amount { color: #fff; font-size: 48px; font-weight: 800; font-family: var(--mono); letter-spacing: -0.03em; }
-    .plan-price .currency { color: rgba(255,255,255,0.6); font-size: 22px; font-weight: 600; }
-    .plan-period { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
-    .plan-desc { color: rgba(255,255,255,0.45); font-size: 14px; line-height: 1.5; margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
-    .plan-features { list-style: none; margin-bottom: 32px; }
-    .plan-features li { display: flex; align-items: center; gap: 12px; padding: 9px 0; color: var(--muted); font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.04); }
-    .plan-features li:last-child { border-bottom: none; }
-    .plan-features li.ok { color: rgba(255,255,255,0.75); }
-    .feat-icon { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; }
-    .feat-icon.yes { background: rgba(16,185,129,0.15); color: var(--green); }
-    .feat-icon.no  { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.2); }
+
+    .plan-name {
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .plan-price {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+
+    .plan-price .amount {
+      color: #fff;
+      font-size: 48px;
+      font-weight: 800;
+      font-family: var(--mono);
+      letter-spacing: -0.03em;
+    }
+
+    .plan-price .currency {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .plan-period {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+
+    .plan-desc {
+      color: rgba(255, 255, 255, 0.45);
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 28px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .plan-features {
+      list-style: none;
+      margin-bottom: 32px;
+    }
+
+    .plan-features li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 0;
+      color: var(--muted);
+      font-size: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .plan-features li:last-child {
+      border-bottom: none;
+    }
+
+    .plan-features li.ok {
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .feat-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      flex-shrink: 0;
+    }
+
+    .feat-icon.yes {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--green);
+    }
+
+    .feat-icon.no {
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.2);
+    }
+
     .plan-btn {
-      width: 100%; padding: 13px; border: none; border-radius: 10px;
-      font-family: var(--sans); font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 10px;
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
     }
+
     .plan-btn.primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff;
-      box-shadow: 0 0 30px rgba(99,102,241,0.3);
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      box-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
     }
-    .plan-btn.primary:hover { box-shadow: 0 0 50px rgba(99,102,241,0.5); transform: translateY(-1px); }
-    .plan-btn.ghost { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); }
-    .plan-btn.ghost:hover { background: rgba(255,255,255,0.08); color: #fff; }
 
-    .faq-section { max-width: 720px; margin: 0 auto; }
-    .faq-item { border-bottom: 1px solid var(--border); }
+    .plan-btn.primary:hover {
+      box-shadow: 0 0 50px rgba(99, 102, 241, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .plan-btn.ghost {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .plan-btn.ghost:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    .faq-section {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+
     .faq-q {
-      width: 100%; text-align: left; background: none; border: none; padding: 20px 0;
-      color: #fff; font-size: 16px; font-weight: 500; font-family: var(--sans);
-      cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      padding: 20px 0;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 500;
+      font-family: var(--sans);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    .faq-q .arrow { color: var(--muted); font-size: 18px; transition: transform 0.2s; }
-    .faq-q.open .arrow { transform: rotate(45deg); }
-    .faq-a { color: var(--muted); font-size: 15px; line-height: 1.7; padding-bottom: 20px; display: none; }
-    .faq-a.open { display: block; }
 
-    .guarantee { background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.2); border-radius: 16px; padding: 32px; display: flex; align-items: center; gap: 24px; max-width: 640px; margin: 0 auto; }
-    .guarantee .gicon { font-size: 40px; flex-shrink: 0; }
-    .guarantee h3 { color: #fff; font-size: 18px; font-weight: 600; margin-bottom: 6px; }
-    .guarantee p { color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .faq-q .arrow {
+      color: var(--muted);
+      font-size: 18px;
+      transition: transform 0.2s;
+    }
 
-    @media (max-width: 768px) { .pricing-grid { grid-template-columns: 1fr; } }
+    .faq-q.open .arrow {
+      transform: rotate(45deg);
+    }
+
+    .faq-a {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.7;
+      padding-bottom: 20px;
+      display: none;
+    }
+
+    .faq-a.open {
+      display: block;
+    }
+
+    .guarantee {
+      background: rgba(16, 185, 129, 0.06);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: 16px;
+      padding: 32px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .guarantee .gicon {
+      font-size: 40px;
+      flex-shrink: 0;
+    }
+
+    .guarantee h3 {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .guarantee p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
+
 <body>
-<nav class="navbar" id="navbar"></nav>
-<main class="page">
+  <nav class="navbar" id="navbar"></nav>
+  <main class="page">
 
-  <section class="pricing-hero">
-    <div class="container">
-      <div class="eyebrow">Тарифы</div>
-      <h1>Простые и честные цены</h1>
-      <p>Начни бесплатно. Перейди на Pro когда будешь готов. Никаких скрытых платежей.</p>
-    </div>
-  </section>
-
-  <div class="container">
-
-    <!-- Toggle -->
-    <div class="billing-toggle">
-      <span id="lbl-month" class="active">Ежемесячно</span>
-      <div class="toggle-switch" id="toggle" onclick="switchBilling()">
-        <div class="toggle-knob"></div>
-      </div>
-      <span id="lbl-year">Ежегодно <span class="save-badge">−20%</span></span>
-    </div>
-
-    <!-- Plans -->
-    <div class="pricing-grid" id="pricing-grid"></div>
-
-    <!-- Guarantee -->
-    <div class="section">
-      <div class="guarantee">
-        <div class="gicon">🛡️</div>
-        <div>
-          <h3>Гарантия возврата 14 дней</h3>
-          <p>Если платная подписка не оправдала ожиданий – вернём деньги без лишних вопросов в течение 14 дней с момента оплаты.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- FAQ -->
-    <section class="section" style="border-top:1px solid var(--border)">
-      <h2 style="color:#fff;font-size:30px;font-weight:700;letter-spacing:-0.02em;text-align:center;margin-bottom:48px">Частые вопросы</h2>
-      <div class="faq-section">
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">Можно ли начать бесплатно? <span class="arrow">+</span></button>
-          <div class="faq-a">Да. Тариф «Бесплатно» включает все концепции, статьи, роудмапы и страницы языков. Никакой кредитной карты не нужно.</div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">Что даёт Pro-подписка? <span class="arrow">+</span></button>
-          <div class="faq-a">Pro открывает сохранение прогресса, личный кабинет с историей активности и возможность отслеживать несколько роудмапов одновременно.</div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">Как работает тариф Team? <span class="arrow">+</span></button>
-          <div class="faq-a">Team предназначен для учебных групп и кафедр. Включает всё из Pro плюс приоритетную поддержку. Свяжитесь с нами для подключения группы.</div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">Можно ли отменить подписку? <span class="arrow">+</span></button>
-          <div class="faq-a">Да, в любой момент. Доступ сохраняется до конца оплаченного периода. При отмене автоматического продления нет.</div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggleFaq(this)">Есть ли скидки для студентов? <span class="arrow">+</span></button>
-          <div class="faq-a">Да! Студентам предоставляется дополнительная скидка 30% при подтверждении студенческого статуса. Напишите нам на team@foc.dev.</div>
-        </div>
+    <section class="pricing-hero">
+      <div class="container">
+        <div class="eyebrow">Тарифы</div>
+        <h1>Простые и честные цены</h1>
+        <p>Начни бесплатно. Перейди на Pro когда будешь готов. Никаких скрытых платежей.</p>
       </div>
     </section>
 
-  </div>
-</main>
-<footer class="footer" id="footer"></footer>
-<script src="../js/data.js"></script>
-<script src="../js/components.js"></script>
-<script src="../js/auth.js"></script>
-<script>
-  renderNavbar('pricing');
-  renderFooter(false);
+    <div class="container">
 
-  let yearly = false;
+      <!-- Toggle -->
+      <div class="billing-toggle">
+        <span id="lbl-month" class="active">Ежемесячно</span>
+        <div class="toggle-switch" id="toggle" onclick="switchBilling()">
+          <div class="toggle-knob"></div>
+        </div>
+        <span id="lbl-year">Ежегодно <span class="save-badge">−20%</span></span>
+      </div>
 
-  function switchBilling() {
-    yearly = !yearly;
-    document.getElementById('toggle').classList.toggle('on', yearly);
-    document.getElementById('lbl-month').classList.toggle('active', !yearly);
-    document.getElementById('lbl-year').classList.toggle('active', yearly);
-    renderPricing();
-  }
+      <!-- Plans -->
+      <div class="pricing-grid" id="pricing-grid"></div>
 
-  function renderPricing() {
-    document.getElementById('pricing-grid').innerHTML = PRICING.map(p => {
-      let price = p.price;
-      if (yearly && price !== '0 ₽') {
-        const num = parseInt(price);
-        price = Math.round(num * 0.8 * 12) + ' ₽';
-      }
-      const period = yearly && p.price !== '0 ₽' ? 'в год' : p.period;
-      const features = p.features.map(f => `
-        <li class="${f.ok?'ok':''}">
-          <span class="feat-icon ${f.ok?'yes':'no'}">${f.ok?'✓':'−'}</span>
+      <!-- Guarantee -->
+      <div class="section">
+        <div class="guarantee">
+          <div class="gicon">🛡️</div>
+          <div>
+            <h3>Гарантия возврата 14 дней</h3>
+            <p>Если платная подписка не оправдала ожиданий – вернём деньги без лишних вопросов в течение 14 дней с
+              момента оплаты.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <section class="section" style="border-top:1px solid var(--border)">
+        <h2
+          style="color:#fff;font-size:30px;font-weight:700;letter-spacing:-0.02em;text-align:center;margin-bottom:48px">
+          Частые вопросы</h2>
+        <div class="faq-section">
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Можно ли начать бесплатно? <span
+                class="arrow">+</span></button>
+            <div class="faq-a">Да. Тариф «Бесплатно» включает все концепции, статьи, роудмапы и страницы языков. Никакой
+              кредитной карты не нужно.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Что даёт Pro-подписка? <span class="arrow">+</span></button>
+            <div class="faq-a">Pro открывает сохранение прогресса, личный кабинет с историей активности и возможность
+              отслеживать несколько роудмапов одновременно.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Как работает тариф Team? <span
+                class="arrow">+</span></button>
+            <div class="faq-a">Team предназначен для учебных групп и кафедр. Включает всё из Pro плюс приоритетную
+              поддержку. Свяжитесь с нами для подключения группы.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Можно ли отменить подписку? <span
+                class="arrow">+</span></button>
+            <div class="faq-a">Да, в любой момент. Доступ сохраняется до конца оплаченного периода. При отмене
+              автоматического продления нет.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">Есть ли скидки для студентов? <span
+                class="arrow">+</span></button>
+            <div class="faq-a">Да! Студентам ИВТиПТ предоставляется дополнительная скидка 30% при подтверждении студенческого
+              статуса. Напишите нам на vashihdeneguzhenet@sfedu.ru.</div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+  <footer class="footer" id="footer"></footer>
+  <script src="../js/data.js"></script>
+  <script src="../js/components.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>
+    renderNavbar('pricing');
+    renderFooter(false);
+
+    let yearly = false;
+
+    function switchBilling() {
+      yearly = !yearly;
+      document.getElementById('toggle').classList.toggle('on', yearly);
+      document.getElementById('lbl-month').classList.toggle('active', !yearly);
+      document.getElementById('lbl-year').classList.toggle('active', yearly);
+      renderPricing();
+    }
+
+    function renderPricing() {
+      document.getElementById('pricing-grid').innerHTML = PRICING.map(p => {
+        let price = p.price;
+        if (yearly && price !== '0 ₽') {
+          const num = parseInt(price);
+          price = Math.round(num * 0.8 * 12) + ' ₽';
+        }
+        const period = yearly && p.price !== '0 ₽' ? 'в год' : p.period;
+        const features = p.features.map(f => `
+        <li class="${f.ok ? 'ok' : ''}">
+          <span class="feat-icon ${f.ok ? 'yes' : 'no'}">${f.ok ? '✓' : '−'}</span>
           ${f.text}
         </li>`).join('');
-      return `
-        <div class="plan-card ${p.highlight?'highlighted':''}">
+        return `
+        <div class="plan-card ${p.highlight ? 'highlighted' : ''}">
           ${p.badge ? `<div class="plan-badge">${p.badge}</div>` : ''}
           <div class="plan-name">${p.name}</div>
           <div class="plan-price">
             ${price !== '0 ₽' ? '<span class="currency">₽</span>' : ''}
-            <span class="amount">${price==='0 ₽'?'0':price.replace(' ₽','')}</span>
+            <span class="amount">${price === '0 ₽' ? '0' : price.replace(' ₽', '')}</span>
           </div>
           <div class="plan-period">${period}</div>
           <div class="plan-desc">${p.desc}</div>
           <ul class="plan-features">${features}</ul>
-          <button class="plan-btn ${p.highlight?'primary':'ghost'}" onclick="window.location.href='register.html'">
-            ${p.price==='0 ₽' ? 'Начать бесплатно' : 'Выбрать ' + p.name}
+          <button class="plan-btn ${p.highlight ? 'primary' : 'ghost'}" onclick="window.location.href='register.html'">
+            ${p.price === '0 ₽' ? 'Начать бесплатно' : 'Выбрать ' + p.name}
           </button>
         </div>`;
-    }).join('');
-  }
+      }).join('');
+    }
 
-  function toggleFaq(btn) {
-    const a = btn.nextElementSibling;
-    const isOpen = a.classList.contains('open');
-    document.querySelectorAll('.faq-a').forEach(el => el.classList.remove('open'));
-    document.querySelectorAll('.faq-q').forEach(el => el.classList.remove('open'));
-    if (!isOpen) { a.classList.add('open'); btn.classList.add('open'); }
-  }
+    function toggleFaq(btn) {
+      const a = btn.nextElementSibling;
+      const isOpen = a.classList.contains('open');
+      document.querySelectorAll('.faq-a').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('.faq-q').forEach(el => el.classList.remove('open'));
+      if (!isOpen) { a.classList.add('open'); btn.classList.add('open'); }
+    }
 
-  renderPricing();
-</script>
+    renderPricing();
+  </script>
 </body>
+
 </html>

@@ -135,7 +135,7 @@ body {
 .speaker-egor { background-color: #e0f2fe; color: #0369a1; }
 .speaker-slava { background-color: #e0e7ff; color: #4338ca; }
 .speaker-sasha { background-color: #d1fae5; color: #047857; }
-.speaker-gosha { background-color: #f3e8ff; color: #6b21a8; }
+.speaker-gosha { background-color: #fef3c7; color: #d97706; }
 .speaker-none { background-color: #f1f5f9; color: #475569; }
 
 /* Actions & Speech */
@@ -209,7 +209,7 @@ body {
       <div style="font-size: 9.5px; color: #64748b; margin-top: 4px;">Обоснование актуальности, бенчмаркинг рынка, анализ ЦА и Content Engineering.</div>
     </div>
     <div class="member">
-      <div class="member-name" style="color: #6b21a8;">Георгий Литвиненко</div>
+      <div class="member-name" style="color: #d97706;">Георгий Литвиненко</div>
       <div class="member-role">QA & Release Engineer</div>
       <div style="font-size: 9.5px; color: #64748b; margin-top: 4px;">Quality Assurance, валидация стейта, регрессионное тестирование и бэклог развития.</div>
     </div>

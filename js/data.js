@@ -441,6 +441,7 @@ const TEAM = [
     name: "Егор Бобровских",
     role: "Тимлид · Архитектор · UX",
     avatar: "Е",
+    avatar_img: "assets/images/egor.webp",
     color: "#6366f1",
     desc: "Отвечает за техническую архитектуру, UX-прототипирование и code review. Координирует работу команды.",
     skills: ["Architecture", "UX/UI", "Code Review", "TypeScript"]
@@ -449,6 +450,7 @@ const TEAM = [
     name: "Вячеслав Федоренко",
     role: "Fullstack Developer · UI",
     avatar: "В",
+    avatar_img: "assets/images/vyacheslav2.webp",
     color: "#10b981",
     desc: "Разрабатывает визуальную часть и программную логику. Верстает компоненты, интегрирует бэкенд.",
     skills: ["React", "Node.js", "CSS", "API Design"]
@@ -457,6 +459,7 @@ const TEAM = [
     name: "Георгий Литвиненко",
     role: "QA Engineer",
     avatar: "Г",
+    avatar_img: "assets/images/georgiy.webp",
     color: "#f59e0b",
     desc: "Тестирует функциональность, проверяет адаптивность и находит баги. Следит за качеством продукта.",
     skills: ["Testing", "Bug Reports", "Pixel Perfect", "UX Testing"]
@@ -465,6 +468,7 @@ const TEAM = [
     name: "Александр Владимиров",
     role: "Контент-менеджер · Аналитик",
     avatar: "А",
+    avatar_img: "assets/images/aleksandr.webp",
     color: "#8b5cf6",
     desc: "Пишет статьи, готовит примеры кода на трёх языках, анализирует рынок конкурентов.",
     skills: ["Technical Writing", "Python", "C", "Market Analysis"]
