@@ -474,7 +474,7 @@ html, body {
   <div class="title-container">
     <div class="project-tag">ПРОЕКТНАЯ ДЕЯТЕЛЬНОСТЬ &nbsp;•&nbsp; ЮЖНЫЙ ФЕДЕРАЛЬНЫЙ УНИВЕРСИТЕТ</div>
     <h1 class="main-title">FOUNDATION OF CODE</h1>
-    <p class="subtitle">Интерактивная SPA-платформа для декомпозиции фундаментальных концепций программирования и кросс-языкового анализа</p>
+    <p class="subtitle">Образовательная веб-платформа для изучения фундаментальных концепций программирования</p>
     <div class="group-info">Группа 25ВТ–09.03.03.01–о1</div>
   </div>
   <div class="title-decor">
