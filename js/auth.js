@@ -21,8 +21,24 @@ const Auth = {
   register(firstName, lastName, email, password) {
     if (!firstName || !lastName || !email || !password)
       return { ok: false, error: 'Заполните все поля.' };
-    if (password.length < 8)
-      return { ok: false, error: 'Пароль – минимум 8 символов.' };
+
+    // Имя и Фамилия: только русские/латинские буквы и дефисы, от 2 символов
+    const nameRegex = /^[a-zA-Zа-яА-ЯёЁ\-]{2,}$/;
+    if (!nameRegex.test(firstName.trim()))
+      return { ok: false, error: 'Имя должно содержать только буквы (минимум 2).' };
+    if (!nameRegex.test(lastName.trim()))
+      return { ok: false, error: 'Фамилия должна содержать только буквы (минимум 2).' };
+
+    // Email: стандартная проверка формата
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim()))
+      return { ok: false, error: 'Введите корректный email адрес.' };
+
+    // Пароль: минимум 8 символов, хотя бы одна цифра, одна заглавная и одна строчная буква
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!passwordRegex.test(password)) {
+      return { ok: false, error: 'Пароль должен содержать минимум 8 символов, включая цифры, строчные и заглавные буквы.' };
+    }
 
     const users = Auth.allUsers();
     if (users.find(u => u.email.toLowerCase() === email.toLowerCase()))
