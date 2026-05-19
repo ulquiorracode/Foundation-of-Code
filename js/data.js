@@ -447,7 +447,7 @@ const TEAM = [
     name: "Егор Бобровских",
     role: "Тимлид · Архитектор · UX",
     avatar: "Е",
-    avatar_img: "assets/images/egor.webp",
+    avatar_img: "assets/images/egor2.webp",
     color: "#6366f1",
     desc: "Отвечает за техническую архитектуру, UX-прототипирование и code review. Координирует работу команды.",
     skills: ["Architecture", "UX/UI", "Code Review", "TypeScript"]
