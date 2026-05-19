@@ -24,6 +24,41 @@
 
 html { scroll-behavior: smooth; }
 
+/* ─── ANIMATIONS & TRANSITIONS ─────────────────────────────── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.06);
+    opacity: 1.1;
+  }
+}
+
+/* Applied directly to page heroes for entry animations */
+.hero-badge { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.hero h1 { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both; }
+.hero p { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.24s both; }
+.hero-actions { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.36s both; }
+
+.about-hero h1 { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.about-hero p { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both; }
+
+.team-hero h1 { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.team-hero p { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both; }
+
 body {
   background: var(--bg);
   color: var(--text);
@@ -89,6 +124,15 @@ button { font-family: var(--sans); cursor: pointer; }
   min-height: 100vh; display: flex; align-items: center;
   position: relative; overflow: hidden;
   background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(99,102,241,0.18) 0%, transparent 70%);
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -10%; left: 10%; right: 10%; bottom: 30%;
+  background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(99,102,241,0.22) 0%, transparent 80%);
+  z-index: 0;
+  pointer-events: none;
+  animation: pulseGlow 10s infinite alternate ease-in-out;
 }
 .hero-grid {
   position: absolute; inset: 0; z-index: 0;
@@ -157,9 +201,14 @@ button { font-family: var(--sans); cursor: pointer; }
 /* CONCEPT CARD */
 .concept-card {
   background: var(--card); border: 1px solid var(--border); border-radius: 14px;
-  padding: 28px; transition: all 0.2s; cursor: pointer; display: block;
+  padding: 28px; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; display: block;
 }
-.concept-card:hover { background: rgba(99,102,241,0.08); border-color: rgba(99,102,241,0.3); transform: translateY(-2px); }
+.concept-card:hover {
+  background: rgba(99,102,241,0.08);
+  border-color: rgba(99,102,241,0.4);
+  transform: translateY(-5px);
+  box-shadow: 0 16px 36px rgba(99, 102, 241, 0.12);
+}
 .concept-card .card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; }
 .concept-card .icon { font-size: 28px; }
 .concept-card .tag-row { margin-bottom: 8px; }
@@ -174,9 +223,12 @@ button { font-family: var(--sans); cursor: pointer; }
 /* ROADMAP CARD */
 .roadmap-card {
   background: var(--card); border: 1px solid var(--border); border-radius: 14px;
-  padding: 28px; cursor: pointer; transition: all 0.2s; display: block;
+  padding: 28px; cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: block;
 }
-.roadmap-card:hover { transform: translateY(-3px); }
+.roadmap-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25);
+}
 .roadmap-card .ricon { font-size: 36px; margin-bottom: 16px; }
 .roadmap-card h3 { color: #fff; font-size: 20px; font-weight: 700; margin-bottom: 12px; }
 .roadmap-card .meta { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; }
@@ -192,9 +244,14 @@ button { font-family: var(--sans); cursor: pointer; }
 /* ARTICLE CARD */
 .article-card {
   background: var(--card); border: 1px solid var(--border); border-radius: 14px;
-  padding: 24px; transition: all 0.2s; cursor: pointer; display: block;
+  padding: 24px; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; display: block;
 }
-.article-card:hover { background: rgba(99,102,241,0.06); border-color: rgba(99,102,241,0.25); }
+.article-card:hover {
+  background: rgba(99,102,241,0.08);
+  border-color: rgba(99,102,241,0.4);
+  transform: translateY(-5px);
+  box-shadow: 0 16px 36px rgba(99, 102, 241, 0.12);
+}
 .article-card .card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
 .article-card .read-time { color: rgba(255,255,255,0.35); font-size: 12px; }
 .article-card h3 { color: #fff; font-size: 16px; font-weight: 600; line-height: 1.4; margin-bottom: 10px; }
