@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Профиль – Foundation of Code</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .logout-btn {
+      background: rgba(244,63,94,0.08); border: 1px solid rgba(244,63,94,0.2);
+      color: #fb7185; padding: 7px 16px; border-radius: 8px;
+      font-family: var(--sans); font-size: 13px; cursor: pointer; transition: all 0.15s;
+    }
+    .logout-btn:hover { background: rgba(244,63,94,0.18); }
+    .guest-banner {
+      background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.25);
+      border-radius: 16px; padding: 40px; text-align: center; margin: 40px 0;
+    }
+    .guest-banner h2 { color: #fff; font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+    .guest-banner p { color: var(--muted); font-size: 15px; margin-bottom: 24px; }
+    .edit-name-btn {
+      background: none; border: 1px solid rgba(255,255,255,0.12); border-radius: 8px;
+      color: rgba(255,255,255,0.4); font-size: 12px; padding: 4px 10px;
+      font-family: var(--sans); cursor: pointer; transition: all 0.15s; margin-left: 8px;
+    }
+    .edit-name-btn:hover { border-color: rgba(99,102,241,0.4); color: #a5b4fc; }
+    .toast {
+      position: fixed; bottom: 28px; right: 28px; z-index: 999;
+      background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3);
+      color: var(--green); padding: 12px 20px; border-radius: 10px;
+      font-size: 14px; font-weight: 500; transform: translateY(80px); opacity: 0;
+      transition: all 0.3s;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* Concept progress click */
+    .progress-row { cursor: pointer; }
+    .progress-row:hover .prog-bar-fill { filter: brightness(1.2); }
+    .progress-row .pr-name { transition: color 0.15s; }
+    .progress-row:hover .pr-name { color: #fff !important; }
+  </style>
+</head>
+<body>
+<nav class="navbar" id="navbar"></nav>
+<main class="page">
+  <div class="container" style="padding-top:40px;padding-bottom:80px">
+
+    <!-- Guest state -->
+    <div id="guest-view" style="display:none">
+      <div class="guest-banner">
+        <h2>Вы не авторизованы</h2>
+        <p>Зарегистрируйтесь, чтобы сохранять прогресс, отслеживать роудмапы и настраивать профиль.</p>
+        <a href="register.html" class="btn-primary" style="display:inline-block">Создать аккаунт →</a>
+      </div>
+    </div>
+
+    <!-- Authenticated state -->
+    <div id="auth-view" style="display:none">
+
+      <!-- Header -->
+      <div class="profile-header">
+        <div class="avatar" id="prof-avatar"></div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px">
+            <h2 id="prof-name" style="margin:0"></h2>
+            <button class="edit-name-btn" onclick="openEditModal()">✏️ изменить</button>
+          </div>
+          <p class="sub" id="prof-sub"></p>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <div class="profile-stats">
+            <div class="profile-stat"><div class="n" id="stat-concepts">0</div><div class="l">Концепций изучено</div></div>
+            <div class="profile-stat"><div class="n" id="stat-roadmaps">0</div><div class="l">Роудмапов</div></div>
+            <div class="profile-stat"><div class="n" id="stat-days">0</div><div class="l">Дней с нами</div></div>
+          </div>
+          <button class="logout-btn" onclick="doLogout()">Выйти</button>
+        </div>
+      </div>
+
+      <div class="profile-grid">
+
+        <!-- Progress -->
+        <div class="profile-card">
+          <h3>Прогресс по концепциям <span style="color:var(--muted);font-size:13px;font-weight:400">(нажми для изменения)</span></h3>
+          <div id="progress-list"></div>
+        </div>
+
+        <!-- Right column -->
+        <div>
+          <div class="profile-card" style="margin-bottom:20px">
+            <h3>Роудмапы</h3>
+            <div id="saved-roadmaps"></div>
+            <div style="margin-top:12px">
+              <a href="roadmaps.html" class="btn-ghost" style="display:inline-block;font-size:13px">Все роудмапы →</a>
+            </div>
+          </div>
+
+          <div class="profile-card">
+            <h3>Активность (7 дней)</h3>
+            <div class="activity-bar-wrap" id="activity-bars"></div>
+          </div>
+
+          <!-- Account info -->
+          <div class="profile-card" style="margin-top:20px">
+            <h3>Аккаунт</h3>
+            <div style="color:var(--muted);font-size:13px;line-height:2">
+              <div>Email: <span style="color:rgba(255,255,255,0.6)" id="prof-email"></span></div>
+              <div>Зарегистрирован: <span style="color:rgba(255,255,255,0.6)" id="prof-joined"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- Edit name modal -->
+<div id="modal-overlay" style="
+  display:none;position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,0.65);backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;
+">
+  <div style="
+    background:rgba(13,13,30,0.98);border:1px solid rgba(255,255,255,0.1);
+    border-radius:18px;padding:36px;width:100%;max-width:400px;margin:24px;
+    box-shadow:0 32px 80px rgba(0,0,0,0.6);
+  ">
+    <h3 style="color:#fff;font-size:18px;font-weight:700;margin-bottom:24px">Изменить имя</h3>
+    <div style="margin-bottom:14px">
+      <label style="display:block;color:rgba(255,255,255,0.6);font-size:13px;margin-bottom:6px">Имя</label>
+      <input id="edit-first" type="text" style="
+        width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+        border-radius:10px;padding:11px 14px;color:#fff;font-size:14px;font-family:var(--sans);
+        outline:none;box-sizing:border-box;
+      ">
+    </div>
+    <div style="margin-bottom:24px">
+      <label style="display:block;color:rgba(255,255,255,0.6);font-size:13px;margin-bottom:6px">Фамилия</label>
+      <input id="edit-last" type="text" style="
+        width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+        border-radius:10px;padding:11px 14px;color:#fff;font-size:14px;font-family:var(--sans);
+        outline:none;box-sizing:border-box;
+      ">
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button onclick="closeModal()" style="
+        background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+        border-radius:8px;padding:9px 20px;color:var(--muted);font-family:var(--sans);
+        font-size:14px;cursor:pointer;
+      ">Отмена</button>
+      <button onclick="saveEditName()" style="
+        background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;
+        border-radius:8px;padding:9px 20px;color:#fff;font-family:var(--sans);
+        font-size:14px;font-weight:600;cursor:pointer;
+      ">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<footer class="footer" id="footer"></footer>
+
+<script src="../js/data.js"></script>
+<script src="../js/components.js"></script>
+<script src="../js/auth.js"></script>
+<script>
+  renderNavbar('profile');
+  renderFooter(false);
+
+  let me = Auth.current();
+
+  if (!me) {
+    document.getElementById('guest-view').style.display = 'block';
+  } else {
+    document.getElementById('auth-view').style.display = 'block';
+    renderProfile();
+  }
+
+  function renderProfile() {
+    me = Auth.current();
+
+    // Header
+    document.getElementById('prof-avatar').textContent = Auth.avatarLetter(me);
+    document.getElementById('prof-name').textContent   = Auth.displayName(me);
+    document.getElementById('prof-sub').textContent    = Auth.joinLabel(me);
+    document.getElementById('prof-email').textContent  = me.email;
+
+    const joined = new Date(me.joinedAt);
+    document.getElementById('prof-joined').textContent =
+      joined.toLocaleDateString('ru-RU', { day:'numeric', month:'long', year:'numeric' });
+
+    // Stats
+    const doneConcepts = CONCEPTS.filter(c => (me.progress[c.id] || 0) >= 100).length;
+    document.getElementById('stat-concepts').textContent = doneConcepts;
+    document.getElementById('stat-roadmaps').textContent = (me.savedRoadmaps || []).length;
+    document.getElementById('stat-days').textContent = Auth.daysAgo(me);
+
+    // Progress bars
+    document.getElementById('progress-list').innerHTML = CONCEPTS.map(c => {
+      const pct = me.progress[c.id] || 0;
+      const barColor = pct >= 100
+        ? 'linear-gradient(90deg,#10b981,#34d399)'
+        : 'linear-gradient(90deg,var(--accent),var(--accent2))';
+      return `
+        <div class="progress-row ${pct===0?'inactive':''}" onclick="cycleProgress('${c.id}')">
+          <div class="pr-head">
+            <span class="pr-name" style="color:${pct>0?'rgba(255,255,255,0.7)':'rgba(255,255,255,0.3)'}">${c.icon} ${c.title}</span>
+            <span class="pr-pct">${pct}%</span>
+          </div>
+          <div class="prog-bar">
+            <div class="prog-bar-fill" style="width:${pct}%;background:${barColor};transition:width 0.4s"></div>
+          </div>
+        </div>`;
+    }).join('');
+
+    // Saved roadmaps (all 4 shown, toggleable)
+    document.getElementById('saved-roadmaps').innerHTML = ROADMAPS.map(r => {
+      const saved = (me.savedRoadmaps || []).includes(r.id);
+      return `
+        <div class="saved-roadmap" style="cursor:pointer;border:1px solid ${saved?r.color+'44':'transparent'};transition:border-color 0.2s"
+             onclick="toggleRoadmap('${r.id}')">
+          <span class="sicon">${r.icon}</span>
+          <div style="flex:1">
+            <div class="stitle">${r.title}</div>
+            <div class="sdur">${r.duration}</div>
+          </div>
+          <span style="font-size:18px;color:${saved?r.color:'rgba(255,255,255,0.15)'};transition:color 0.2s">
+            ${saved ? '★' : '☆'}
+          </span>
+        </div>`;
+    }).join('');
+
+    // Activity
+    const days = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+    document.getElementById('activity-bars').innerHTML = days.map((d, i) => `
+      <div class="activity-day">
+        <div class="bar ${(me.activityDays||[])[i]?'active':''}"></div>
+        <div class="day-label">${d}</div>
+      </div>`).join('');
+  }
+
+  // Cycle concept progress: 0 → 30 → 65 → 100 → 0
+  function cycleProgress(id) {
+    const cur = me.progress[id] || 0;
+    const next = cur === 0 ? 30 : cur === 30 ? 65 : cur === 65 ? 100 : 0;
+    me.progress[id] = next;
+    Auth.save(me);
+    renderProfile();
+    showToast(next === 0 ? 'Прогресс сброшен' : `Прогресс: ${next}%`);
+  }
+
+  function toggleRoadmap(id) {
+    if (!me.savedRoadmaps) me.savedRoadmaps = [];
+    const idx = me.savedRoadmaps.indexOf(id);
+    if (idx >= 0) me.savedRoadmaps.splice(idx, 1);
+    else me.savedRoadmaps.push(id);
+    Auth.save(me);
+    renderProfile();
+    showToast(idx >= 0 ? 'Роудмап убран' : 'Роудмап сохранён ★');
+  }
+
+  function doLogout() {
+    Auth.logout();
+    window.location.href = 'register.html';
+  }
+
+  function openEditModal() {
+    document.getElementById('edit-first').value = me.firstName;
+    document.getElementById('edit-last').value  = me.lastName;
+    document.getElementById('modal-overlay').style.display = 'flex';
+  }
+  function closeModal() {
+    document.getElementById('modal-overlay').style.display = 'none';
+  }
+  function saveEditName() {
+    const first = document.getElementById('edit-first').value.trim();
+    const last  = document.getElementById('edit-last').value.trim();
+    if (!first || !last) { showToast('Имя и фамилия не могут быть пустыми'); return; }
+    me.firstName = first; me.lastName = last;
+    Auth.save(me);
+    closeModal();
+    renderProfile();
+    showToast('Имя обновлено ✓');
+  }
+
+  // Close modal on overlay click
+  document.getElementById('modal-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+</script>
+</body>
+</html>

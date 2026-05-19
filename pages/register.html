@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Регистрация – Foundation of Code</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .auth-wrap {
+      min-height: calc(100vh - 60px); display: flex; align-items: center;
+      justify-content: center; padding: 40px 24px;
+      background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(99,102,241,0.12) 0%, transparent 70%);
+    }
+    .auth-box {
+      background: rgba(13,13,30,0.97); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px; padding: 48px 44px; width: 100%; max-width: 460px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+    }
+    .auth-logo { text-align: center; margin-bottom: 32px; }
+    .auth-logo .logo-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 700; color: #fff; margin: 0 auto 12px;
+    }
+    .auth-logo h1 { color: #fff; font-size: 22px; font-weight: 700; font-family: var(--mono); }
+    .auth-logo p  { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+    .tabs { display: flex; background: rgba(255,255,255,0.04); border-radius: 10px; padding: 4px; margin-bottom: 32px; }
+    .tab-btn {
+      flex: 1; padding: 9px; border: none; border-radius: 7px;
+      font-family: var(--sans); font-size: 14px; font-weight: 500; cursor: pointer;
+      background: transparent; color: var(--muted); transition: all 0.2s;
+    }
+    .tab-btn.active { background: rgba(99,102,241,0.25); color: #a5b4fc; font-weight: 600; }
+
+    .name-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .form-group { margin-bottom: 18px; }
+    .form-label { display: block; color: rgba(255,255,255,0.6); font-size: 13px; font-weight: 500; margin-bottom: 7px; }
+    .form-input {
+      width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px; padding: 12px 16px; color: #fff; font-size: 14px; font-family: var(--sans);
+      outline: none; transition: border-color 0.2s;
+    }
+    .form-input:focus { border-color: rgba(99,102,241,0.5); background: rgba(99,102,241,0.06); }
+    .form-input::placeholder { color: rgba(255,255,255,0.2); }
+    .form-input.error { border-color: rgba(244,63,94,0.6); }
+
+    .submit-btn {
+      width: 100%; padding: 13px; border: none; border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff; font-size: 15px; font-weight: 600; font-family: var(--sans);
+      cursor: pointer; margin-top: 6px; transition: all 0.2s;
+      box-shadow: 0 0 30px rgba(99,102,241,0.3);
+    }
+    .submit-btn:hover { transform: translateY(-1px); box-shadow: 0 0 50px rgba(99,102,241,0.5); }
+    .submit-btn:disabled { opacity: 0.5; cursor: default; transform: none; }
+
+    .auth-footer { text-align: center; margin-top: 24px; color: var(--muted); font-size: 13px; }
+    .auth-footer a { color: #a5b4fc; cursor: pointer; }
+
+    .error-msg {
+      background: rgba(244,63,94,0.1); border: 1px solid rgba(244,63,94,0.25);
+      border-radius: 10px; color: #fb7185; padding: 12px 16px;
+      font-size: 13.5px; margin-bottom: 18px; display: none;
+    }
+    .success-msg {
+      background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25);
+      border-radius: 10px; color: var(--green); padding: 14px 16px;
+      font-size: 14px; text-align: center; display: none; margin-top: 16px;
+    }
+    .check-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 18px; }
+    .check-row input[type=checkbox] { margin-top: 2px; accent-color: var(--accent); flex-shrink: 0; }
+    .check-row label { color: rgba(255,255,255,0.45); font-size: 13px; line-height: 1.5; }
+    .check-row label a { color: #a5b4fc; }
+
+    .field-hint { font-size: 11.5px; color: rgba(255,255,255,0.22); margin-top: 5px; }
+
+    /* Logged-in state */
+    .already-logged {
+      text-align: center; padding: 24px 0;
+    }
+    .already-logged .av {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; font-weight: 700; color: #fff; margin: 0 auto 16px;
+    }
+    .already-logged h3 { color: #fff; font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+    .already-logged p { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+    .logout-btn {
+      background: rgba(244,63,94,0.1); border: 1px solid rgba(244,63,94,0.25);
+      color: #fb7185; padding: 9px 20px; border-radius: 8px;
+      font-family: var(--sans); font-size: 14px; cursor: pointer; transition: all 0.15s;
+    }
+    .logout-btn:hover { background: rgba(244,63,94,0.2); }
+  </style>
+</head>
+<body>
+<nav class="navbar" id="navbar"></nav>
+<main class="page">
+  <div class="auth-wrap">
+    <div class="auth-box" id="auth-box">
+
+      <div class="auth-logo">
+        <div class="logo-icon">F</div>
+        <h1>Foundation of Code</h1>
+        <p id="auth-subtitle">Создай аккаунт и начни учиться</p>
+      </div>
+
+      <!-- Already logged in -->
+      <div id="state-logged" style="display:none" class="already-logged">
+        <div class="av" id="al-avatar"></div>
+        <h3 id="al-name"></h3>
+        <p id="al-sub"></p>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+          <a href="profile.html" class="btn-primary" style="display:inline-block;padding:10px 22px;font-size:14px">Мой профиль →</a>
+          <button class="logout-btn" onclick="doLogout()">Выйти</button>
+        </div>
+      </div>
+
+      <!-- Auth forms -->
+      <div id="state-auth">
+        <div class="tabs">
+          <button class="tab-btn active" id="tab-reg" onclick="switchTab('reg')">Регистрация</button>
+          <button class="tab-btn" id="tab-login" onclick="switchTab('login')">Войти</button>
+        </div>
+
+        <!-- REGISTER -->
+        <div id="form-reg">
+          <div class="error-msg" id="reg-error"></div>
+          <div class="name-row">
+            <div class="form-group">
+              <label class="form-label">Имя</label>
+              <input class="form-input" type="text" placeholder="Вячеслав" id="reg-first">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Фамилия</label>
+              <input class="form-input" type="text" placeholder="Федоренко" id="reg-last">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input class="form-input" type="email" placeholder="you@example.com" id="reg-email">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Пароль</label>
+            <input class="form-input" type="password" placeholder="Минимум 8 символов" id="reg-password">
+            <div class="field-hint">Буквы, цифры и спецсимволы</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Повторите пароль</label>
+            <input class="form-input" type="password" placeholder="Повторите пароль" id="reg-password2">
+          </div>
+          <div class="check-row">
+            <input type="checkbox" id="agree">
+            <label for="agree">Я соглашаюсь с <a href="#">условиями использования</a> и <a href="#">политикой конфиденциальности</a></label>
+          </div>
+          <button class="submit-btn" onclick="doRegister()">Создать аккаунт</button>
+          <div class="success-msg" id="reg-success">✅ Аккаунт создан! Переходим в профиль...</div>
+          <div class="auth-footer">Уже есть аккаунт? <a onclick="switchTab('login')">Войти</a></div>
+        </div>
+
+        <!-- LOGIN -->
+        <div id="form-login" style="display:none">
+          <div class="error-msg" id="login-error"></div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input class="form-input" type="email" placeholder="you@example.com" id="login-email">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Пароль</label>
+            <input class="form-input" type="password" placeholder="Ваш пароль" id="login-password">
+          </div>
+          <div style="text-align:right;margin-bottom:18px">
+            <a href="#" style="color:#a5b4fc;font-size:13px">Забыли пароль?</a>
+          </div>
+          <button class="submit-btn" onclick="doLogin()">Войти</button>
+          <div class="success-msg" id="login-success">✅ Добро пожаловать! Переходим в профиль...</div>
+          <div class="auth-footer">Нет аккаунта? <a onclick="switchTab('reg')">Зарегистрироваться</a></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+<footer class="footer" id="footer"></footer>
+<script src="../js/data.js"></script>
+<script src="../js/components.js"></script>
+<script src="../js/auth.js"></script>
+<script>
+  renderNavbar('');
+  renderFooter(false);
+
+  // Check if already logged in
+  const me = Auth.current();
+  if (me) {
+    document.getElementById('state-auth').style.display = 'none';
+    document.getElementById('state-logged').style.display = 'block';
+    document.getElementById('al-avatar').textContent = Auth.avatarLetter(me);
+    document.getElementById('al-name').textContent = Auth.displayName(me);
+    document.getElementById('al-sub').textContent = `${me.email} · ${Auth.joinLabel(me)}`;
+    document.getElementById('auth-subtitle').textContent = 'Вы уже вошли в аккаунт';
+  }
+
+  function switchTab(tab) {
+    document.getElementById('tab-reg').classList.toggle('active', tab === 'reg');
+    document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+    document.getElementById('form-reg').style.display = tab === 'reg' ? 'block' : 'none';
+    document.getElementById('form-login').style.display = tab === 'login' ? 'block' : 'none';
+    clearErrors();
+  }
+
+  function clearErrors() {
+    ['reg-error','login-error'].forEach(id => {
+      const el = document.getElementById(id);
+      el.style.display = 'none'; el.textContent = '';
+    });
+  }
+
+  function showError(id, msg) {
+    const el = document.getElementById(id);
+    el.textContent = msg; el.style.display = 'block';
+  }
+
+  function doRegister() {
+    clearErrors();
+    const first  = document.getElementById('reg-first').value.trim();
+    const last   = document.getElementById('reg-last').value.trim();
+    const email  = document.getElementById('reg-email').value.trim();
+    const pwd    = document.getElementById('reg-password').value;
+    const pwd2   = document.getElementById('reg-password2').value;
+    const agreed = document.getElementById('agree').checked;
+
+    if (!first || !last) return showError('reg-error', 'Введите имя и фамилию.');
+    if (!email)          return showError('reg-error', 'Введите email.');
+    if (pwd !== pwd2)    return showError('reg-error', 'Пароли не совпадают.');
+    if (!agreed)         return showError('reg-error', 'Необходимо принять условия использования.');
+
+    const result = Auth.register(first, last, email, pwd);
+    if (!result.ok) return showError('reg-error', result.error);
+
+    document.getElementById('reg-success').style.display = 'block';
+    setTimeout(() => window.location.href = 'profile.html', 1500);
+  }
+
+  function doLogin() {
+    clearErrors();
+    const email = document.getElementById('login-email').value.trim();
+    const pwd   = document.getElementById('login-password').value;
+
+    if (!email || !pwd) return showError('login-error', 'Введите email и пароль.');
+
+    const result = Auth.login(email, pwd);
+    if (!result.ok) return showError('login-error', result.error);
+
+    document.getElementById('login-success').style.display = 'block';
+    setTimeout(() => window.location.href = 'profile.html', 1200);
+  }
+
+  function doLogout() {
+    Auth.logout();
+    location.reload();
+  }
+
+  // Enter key support
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    const regVisible = document.getElementById('form-reg').style.display !== 'none';
+    if (regVisible) doRegister(); else doLogin();
+  });
+</script>
+</body>
+</html>

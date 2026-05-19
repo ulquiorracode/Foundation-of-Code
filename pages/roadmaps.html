@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Роудмапы – Foundation of Code</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<nav class="navbar" id="navbar"></nav>
+<main class="page">
+  <div class="container">
+    <div class="page-hero">
+      <h1>Роудмапы</h1>
+      <p>Структурированные треки обучения под конкретные цели</p>
+    </div>
+    <div id="roadmaps-grid" class="cards-grid-4" style="margin-bottom:48px"></div>
+    <div id="roadmap-detail" style="display:none"></div>
+  </div>
+</main>
+<footer class="footer" id="footer"></footer>
+<script src="../js/data.js"></script>
+<script src="../js/components.js"></script>
+<script src="../js/auth.js"></script>
+<script>
+  renderNavbar('roadmaps');
+  renderFooter(false);
+
+  function renderGrid() {
+    document.getElementById('roadmap-detail').style.display = 'none';
+    document.getElementById('roadmaps-grid').style.display = 'grid';
+    document.getElementById('roadmaps-grid').innerHTML = ROADMAPS.map(r => `
+      <div class="roadmap-card" onclick="openDetail('${r.id}')"
+           onmouseenter="this.style.background='${r.color}10';this.style.borderColor='${r.color}44'"
+           onmouseleave="this.style.background='';this.style.borderColor=''">
+        <div class="ricon">${r.icon}</div>
+        <h3>${r.title}</h3>
+        <div class="meta">${makeTag(r.level, r.color)}<span class="duration">⏱ ${r.duration}</span></div>
+        <div class="steps-preview">
+          ${r.steps.slice(0,3).map((s,i)=>`
+            <div class="step-row">
+              <span class="step-num" style="background:${r.color}22;color:${r.color}">${i+1}</span>
+              <span class="step-title">${s.title}</span>
+            </div>`).join('')}
+          ${r.steps.length>3?`<div class="step-title" style="margin-left:30px;font-size:12px">+ ещё ${r.steps.length-3} шага</div>`:''}
+        </div>
+      </div>`).join('');
+  }
+
+  function openDetail(id) {
+    const r = ROADMAPS.find(x => x.id === id);
+    document.getElementById('roadmaps-grid').style.display = 'none';
+    const detail = document.getElementById('roadmap-detail');
+    detail.style.display = 'block';
+    detail.innerHTML = `
+      <button class="btn-back" onclick="renderGrid()">← Назад к роудмапам</button>
+      <div class="roadmap-detail">
+        <div class="roadmap-detail-header">
+          <span class="big-icon">${r.icon}</span>
+          <div>
+            <h2>${r.title}</h2>
+            <div class="meta">${makeTag(r.level, r.color)}<span class="duration">⏱ ${r.duration}</span></div>
+          </div>
+        </div>
+        <div class="roadmap-timeline">
+          ${r.steps.map((s,i) => `
+            <div class="timeline-item">
+              <div class="timeline-num" style="background:linear-gradient(135deg,${r.color},${r.color}88)">${i+1}</div>
+              <div class="timeline-content">
+                <h3>${s.title}</h3>
+                <p>${s.desc}</p>
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>`;
+  }
+
+  renderGrid();
+</script>
+</body>
+</html>

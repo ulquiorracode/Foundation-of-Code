@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Языки – Foundation of Code</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<nav class="navbar" id="navbar"></nav>
+<main class="page">
+  <div class="container">
+    <div class="page-hero">
+      <h1>Языки программирования</h1>
+      <p>Сравнение, особенности, области применения</p>
+    </div>
+    <div class="languages-layout">
+      <div class="lang-list" id="lang-list"></div>
+      <div class="lang-detail" id="lang-detail"></div>
+    </div>
+  </div>
+</main>
+<footer class="footer" id="footer"></footer>
+<script src="../js/data.js"></script>
+<script src="../js/components.js"></script>
+<script src="../js/auth.js"></script>
+<script>
+  renderNavbar('languages');
+  renderFooter(false);
+
+  let curLang = LANGUAGES[0];
+
+  function renderLangList() {
+    document.getElementById('lang-list').innerHTML = LANGUAGES.map(l => `
+      <button class="lang-list-btn ${l.id===curLang.id?'active':''}"
+              style="${l.id===curLang.id?'border-color:'+l.color+'55':''}"
+              onclick="selectLang('${l.id}')">
+        <div class="lang-logo" style="background:${l.color}22;color:${l.color}">${l.logo}</div>
+        <span class="lname">${l.name}</span>
+      </button>`).join('');
+  }
+
+  function renderLangDetail() {
+    const l = curLang;
+    const diffBars = [1,2,3,4,5].map(n =>
+      `<span style="background:${n<=l.difficulty?l.color:'rgba(255,255,255,0.08)'}"></span>`
+    ).join('');
+    const paradigmTags = l.paradigm.map(p => makeTag(p, l.color)).join(' ');
+    const domainTags = l.domains.map(d => `<span class="domain-tag">${d}</span>`).join('');
+    const pros = l.pros.map(p => `<li>${p}</li>`).join('');
+    const cons = l.cons.map(c => `<li>${c}</li>`).join('');
+
+    document.getElementById('lang-detail').innerHTML = `
+      <div class="lang-detail-header">
+        <div class="lang-big-logo" style="background:${l.color}22;color:${l.color}">${l.logo}</div>
+        <div>
+          <h2>${l.name}</h2>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">${paradigmTags}</div>
+        </div>
+        <div class="lang-stat">
+          <div class="label">Популярность</div>
+          <div class="num" style="color:${l.color}">${l.popularity}%</div>
+        </div>
+      </div>
+      <p class="lang-desc">${l.desc}</p>
+      <div class="difficulty-bar-label">СЛОЖНОСТЬ</div>
+      <div class="difficulty-bar">${diffBars}</div>
+      <div class="domains-label">ОБЛАСТИ ПРИМЕНЕНИЯ</div>
+      <div class="domains">${domainTags}</div>
+      <div class="pros-cons">
+        <div class="pros-box">
+          <div class="box-label">ПЛЮСЫ</div>
+          <ul>${pros}</ul>
+        </div>
+        <div class="cons-box">
+          <div class="box-label">МИНУСЫ</div>
+          <ul>${cons}</ul>
+        </div>
+      </div>`;
+  }
+
+  function selectLang(id) {
+    curLang = LANGUAGES.find(l => l.id === id);
+    renderLangList();
+    renderLangDetail();
+  }
+
+  renderLangList();
+  renderLangDetail();
+</script>
+</body>
+</html>

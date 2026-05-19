@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Статьи – Foundation of Code</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .article-full { max-width: 720px; margin: 0 auto; }
+    .article-full-header { margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+    .article-full-header h1 { color: #fff; font-size: 36px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; margin: 16px 0 20px; }
+    .article-meta { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; color: var(--muted); font-size: 14px; }
+    .article-body h2 { color: #fff; font-size: 24px; font-weight: 700; margin: 40px 0 16px; letter-spacing: -0.01em; }
+    .article-body h3 { color: rgba(255,255,255,0.8); font-size: 18px; font-weight: 600; margin: 28px 0 12px; }
+    .article-body p { color: rgba(255,255,255,0.6); font-size: 16px; line-height: 1.8; margin-bottom: 16px; }
+    .article-body pre {
+      background: rgb(10,10,20); border: 1px solid var(--border2);
+      border-radius: 10px; padding: 20px 24px; margin: 20px 0;
+      overflow-x: auto;
+    }
+    .article-body pre code { font-family: var(--mono); font-size: 13.5px; line-height: 1.8; color: #e2e8f0; }
+    .article-body code { font-family: var(--mono); font-size: 13px; background: rgba(99,102,241,0.15); color: #a5b4fc; padding: 2px 6px; border-radius: 4px; }
+    .article-body pre code { background: none; padding: 0; color: #e2e8f0; }
+    .article-body strong { color: rgba(255,255,255,0.85); font-weight: 600; }
+    .article-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+<nav class="navbar" id="navbar"></nav>
+<main class="page">
+  <div class="container">
+
+    <!-- LIST VIEW -->
+    <div id="list-view">
+      <div class="page-hero">
+        <h1>Статьи и гайды</h1>
+        <p>Углублённые материалы по концепциям программирования</p>
+      </div>
+      <div class="filter-bar" id="filter-bar"></div>
+      <div class="cards-grid-3" id="articles-list"></div>
+    </div>
+
+    <!-- ARTICLE VIEW -->
+    <div id="article-view" style="display:none; padding: 40px 0 80px;">
+      <button class="btn-back" onclick="showList()">← Все статьи</button>
+      <div class="article-full">
+        <div class="article-full-header">
+          <div id="av-tag"></div>
+          <h1 id="av-title"></h1>
+          <div class="article-meta">
+            <span id="av-author"></span>
+            <span>·</span>
+            <span id="av-date"></span>
+            <span>·</span>
+            <span id="av-time"></span>
+          </div>
+        </div>
+        <div class="article-body" id="av-body"></div>
+        <div class="article-nav">
+          <button class="btn-back" style="margin:0" onclick="showList()">← Все статьи</button>
+          <div id="av-next-prev" style="display:flex;gap:8px"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+<footer class="footer" id="footer"></footer>
+<script src="../js/data.js"></script>
+<script src="../js/components.js"></script>
+<script src="../js/auth.js"></script>
+<script>
+  renderNavbar('articles');
+  renderFooter(false);
+
+  let curFilter = 'Все';
+  const tags = ['Все', ...new Set(ARTICLES.map(a => a.tag))];
+
+  document.getElementById('filter-bar').innerHTML = tags.map(t =>
+    `<button class="filter-btn ${t===curFilter?'active':''}" onclick="setFilter('${t}')">${t}</button>`
+  ).join('');
+
+  function setFilter(tag) {
+    curFilter = tag;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.textContent===tag));
+    renderArticles();
+  }
+
+  function renderArticles() {
+    const list = curFilter==='Все' ? ARTICLES : ARTICLES.filter(a => a.tag===curFilter);
+    document.getElementById('articles-list').innerHTML = list.map(a => `
+      <div class="article-card" onclick="openArticle(${a.id})" style="cursor:pointer">
+        <div class="card-top">${makeTag(a.tag)}<span class="read-time">${a.readTime}</span></div>
+        <h3>${a.title}</h3>
+        <p>${a.excerpt}</p>
+        <div class="footer-row"><span class="author">${a.author}</span><span class="date">${a.date}</span></div>
+      </div>`).join('');
+  }
+
+  function openArticle(id) {
+    const a = ARTICLES.find(x => x.id === id);
+    if (!a) return;
+    document.getElementById('list-view').style.display = 'none';
+    document.getElementById('article-view').style.display = 'block';
+    document.getElementById('av-tag').innerHTML = makeTag(a.tag);
+    document.getElementById('av-title').textContent = a.title;
+    document.getElementById('av-author').textContent = a.author;
+    document.getElementById('av-date').textContent = a.date;
+    document.getElementById('av-time').textContent = a.readTime + ' чтения';
+    document.getElementById('av-body').innerHTML = a.content || '<p>Контент скоро появится.</p>';
+
+    // Prev / Next
+    const idx = ARTICLES.findIndex(x => x.id === id);
+    let nav = '';
+    if (idx > 0) nav += `<button class="btn-ghost" onclick="openArticle(${ARTICLES[idx-1].id})">← Предыдущая</button>`;
+    if (idx < ARTICLES.length-1) nav += `<button class="btn-ghost" onclick="openArticle(${ARTICLES[idx+1].id})">Следующая →</button>`;
+    document.getElementById('av-next-prev').innerHTML = nav;
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Update URL hash for bookmarking
+    history.replaceState(null, '', `?id=${id}`);
+  }
+
+  function showList() {
+    document.getElementById('article-view').style.display = 'none';
+    document.getElementById('list-view').style.display = 'block';
+    history.replaceState(null, '', 'articles.html');
+  }
+
+  // Check URL param on load
+  const params = new URLSearchParams(location.search);
+  const startId = parseInt(params.get('id'));
+  if (startId) {
+    openArticle(startId);
+  } else {
+    renderArticles();
+  }
+</script>
+</body>
+</html>

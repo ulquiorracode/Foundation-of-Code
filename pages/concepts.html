@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Концепции – Foundation of Code</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<nav class="navbar" id="navbar"></nav>
+<main class="page">
+  <div class="container">
+    <div class="page-hero">
+      <h1>Базовые концепции</h1>
+      <p>Фундаментальные идеи программирования – на трёх языках</p>
+    </div>
+    <div class="filter-bar" id="filter-bar"></div>
+    <div class="concepts-layout">
+      <div class="concept-list" id="concept-list"></div>
+      <div class="concept-detail" id="concept-detail">
+        <div class="concept-detail-header">
+          <div class="concept-detail-title">
+            <span class="big-icon" id="detail-icon"></span>
+            <div>
+              <h2 id="detail-title"></h2>
+              <div id="detail-meta" style="display:flex;gap:8px;align-items:center;margin-top:4px"></div>
+            </div>
+          </div>
+          <p class="concept-detail-desc" id="detail-desc"></p>
+          <div class="lang-tabs" id="lang-tabs"></div>
+        </div>
+        <div class="code-block" id="code-block"></div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="footer" id="footer"></footer>
+<script src="../js/data.js"></script>
+<script src="../js/components.js"></script>
+<script src="../js/auth.js"></script>
+<script>
+  renderNavbar('concepts');
+  renderFooter(false);
+
+  let cur = CONCEPTS[0], curLang = CONCEPTS[0].langs[0], curFilter = 'Все';
+
+  const tags = ['Все', ...new Set(CONCEPTS.map(c => c.tag))];
+  document.getElementById('filter-bar').innerHTML = tags.map(t =>
+    `<button class="filter-btn ${t===curFilter?'active':''}" onclick="setFilter('${t}')">${t}</button>`
+  ).join('');
+
+  function setFilter(tag) {
+    curFilter = tag;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.textContent === tag));
+    renderList();
+  }
+
+  function renderList() {
+    const list = curFilter === 'Все' ? CONCEPTS : CONCEPTS.filter(c => c.tag === curFilter);
+    document.getElementById('concept-list').innerHTML = list.map(c => `
+      <button class="concept-list-btn ${c.id===cur.id?'active':''}" onclick="selectConcept('${c.id}')">
+        <span class="cicon">${c.icon}</span>
+        <div>
+          <div class="cname">${c.title}</div>
+          <div style="display:flex;gap:8px;align-items:center">${makeTag(c.tag)}${makeDifficulty(c.difficulty)}</div>
+        </div>
+      </button>`).join('');
+  }
+
+  function selectConcept(id) {
+    cur = CONCEPTS.find(c => c.id === id);
+    curLang = cur.langs[0];
+    renderDetail(); renderList();
+  }
+
+  function selectLang(lang) {
+    curLang = lang; renderTabs(); renderCode();
+  }
+
+  function renderTabs() {
+    document.getElementById('lang-tabs').innerHTML = cur.langs.map(l =>
+      `<button class="lang-tab-btn ${l===curLang?'active':''}" onclick="selectLang('${l}')">${l}</button>`
+    ).join('');
+  }
+
+  function renderCode() {
+    const lines = (cur.code[curLang]||'').split('\n');
+    document.getElementById('code-block').innerHTML = lines.map((line,i) => {
+      const isCmt = line.trim().startsWith('//')||line.trim().startsWith('#');
+      return `<div class="code-line"><span class="ln">${i+1}</span><span class="ct ${isCmt?'comment':''}">${esc(line)}</span></div>`;
+    }).join('');
+  }
+
+  function renderDetail() {
+    document.getElementById('detail-icon').textContent = cur.icon;
+    document.getElementById('detail-title').textContent = cur.title;
+    document.getElementById('detail-meta').innerHTML = makeTag(cur.tag)+makeDifficulty(cur.difficulty);
+    document.getElementById('detail-desc').textContent = cur.desc;
+    renderTabs(); renderCode();
+  }
+
+  function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  renderList(); renderDetail();
+</script>
+</body>
+</html>
